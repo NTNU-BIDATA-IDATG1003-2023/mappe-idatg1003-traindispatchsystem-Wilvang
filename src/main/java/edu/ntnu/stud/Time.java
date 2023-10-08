@@ -1,34 +1,28 @@
 package edu.ntnu.stud;
 
 /**
- * The Time class represents a digital time display that can hold
- * numbers from zero to the time limit. The time limit can be specified
- * with the setTimeLimit() methode. the time limit is limited to
- * positive integers greater than zero. The time value range from zero
- * to the time limit-1. By for example creating the seconds in a digital
- * clock display, the time values will range from 0-59. The changeTime()
- * methode is used to increase the time value by the time passed by,
- * rolling over to zero if the time limit is reached.
+ * The Time class represent information of different time units in a digital
+ * clock that can hold numbers from zero to the time limit. The time limit can
+ * be specified with the setTimeLimit() methode. the time limit is limited to
+ * positive integers greater than zero. The time value range from zero to
+ * the time limit-1. By for example creating the seconds in a digital clock,
+ * the time values will range from 0-59. The changeTime() methode is used to
+ * increase the time value by the time passed by, rolling over to zero if the
+ * time limit is reached.
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 1.0.0
+ * @version 1.1.0
  * @since 7, okt, 2023
  */
 public class Time {
-    /**
-     * Field that holds the value of the time as an integer.
-     */
     private int timeValue;
-    /**
-     * Field that hold the time limit in which the time value will roll
-     * over to zero.
-     */
     private int timeLimit;
 
     /**
      * Creates a new object of class Time, which will hold the information
-     * of different time units, such as seconds, minutes and hours.
+     * of different time units, such as seconds, minutes and hours in a
+     * digital clock.
      * @param timeValue The time value to be added.
      * @param timeLimit The time limit to be added.
      */
@@ -72,14 +66,14 @@ public class Time {
     /**
      * Set the time value to a new specified time value. If the
      * specified value is less than zero or more than the
-     * time limit, the value is set to the invalid parameter -1.
+     * time limit, the time value is set to zero.
      * @param timeValue The new specified time value.
      */
     public void setTimeValue(int timeValue) {
         if (timeValue >= 0 && timeValue < timeLimit){
             this.timeValue = timeValue;
         } else {
-            this.timeValue = -1;
+            this.timeValue = 0;
         }
     }
 
@@ -89,7 +83,7 @@ public class Time {
      * to the invalid parameter -1.
      * @param timeLimit The new specified time limit.
      */
-    private void setTimeLimit(int timeLimit) {
+    public void setTimeLimit(int timeLimit) {
         if (timeLimit > 0) {
             this.timeLimit = timeLimit;
         } else {
@@ -98,12 +92,11 @@ public class Time {
     }
 
     /**
-     * Increase the time value by the time passed by. The time value
-     * will roll over to zero if the time limit is reached.
-     * @param timePassedBy The new specified amount of time passed by.
+     * Increase the time value by one. The time value will roll over
+     * to zero if the time limit is reached.
      */
-    public void changeTime(int timePassedBy) {
-        this.timeValue = (this.timeValue + timePassedBy) % this.timeLimit;
+    public void increaseTime() {
+        this.timeValue = (this.timeValue + 1) % this.timeLimit;
     }
 
 }
