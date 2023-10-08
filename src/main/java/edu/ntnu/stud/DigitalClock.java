@@ -6,7 +6,7 @@ package edu.ntnu.stud;
  * from 00:00 (midnight) to 23:59 (one minute before midnight). The clock
  * can be set to the current time of day with the setTime() methode. If the
  * time is set to a value greater than the time limit, the time is set to
- * zero. Add a specific amount of hours and/or minutes with the changeTime()
+ * zero. Add a specific amount of hours and/or minutes with the timePassed()
  * methode. The digital clock is updated when using any of the methods via
  * the updateDisplay() methode.
  *
@@ -48,14 +48,9 @@ public class DigitalClock {
      * has an invalid input, the display is set to "INVALID".
      * @return The digital clock display as a String.
      */
-    public String updateDisplay(){
+    public void updateDisplay(){
         this.display = this.hours.getClockValue() + ":"
                     + this.minutes.getClockValue();
-        if (this.hours.getTimeLimit() == -1
-            || this.minutes.getTimeLimit() == -1){
-            this.display = "INVALID";
-        }
-        return this.display;
     }
 
     /**
@@ -77,7 +72,7 @@ public class DigitalClock {
      * Updates the display with the new specified time.
      * @param minutesPassedBy The specified amount of minutes passed by.
      */
-    public void changeTime(int minutesPassedBy){
+    public void timePassed(int minutesPassedBy){
         for (int i = 0; i < minutesPassedBy; i++){
             this.minutes.increaseTime();
             if (this.minutes.getTimeValue() == 0){
@@ -95,7 +90,7 @@ public class DigitalClock {
      * @param hoursPassedBy The specified amount of hours passed by.
      * @param minutesPassedBy The specified amount of minutes passed by.
      */
-    public void changeTime(int hoursPassedBy, int minutesPassedBy) {
+    public void timePassed(int hoursPassedBy, int minutesPassedBy) {
         for (int i = 0; i < hoursPassedBy; i++) {
             this.hours.increaseTime();
         }

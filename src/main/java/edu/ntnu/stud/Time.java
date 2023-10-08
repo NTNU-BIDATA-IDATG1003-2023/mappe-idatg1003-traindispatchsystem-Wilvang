@@ -2,10 +2,9 @@ package edu.ntnu.stud;
 
 /**
  * The Time class represent information of different time units in a digital
- * clock that can hold numbers from zero to the time limit. The time limit can
- * be specified with the setTimeLimit() methode. the time limit is limited to
- * positive integers greater than zero. The time value range from zero to
- * the time limit-1. By for example creating the seconds in a digital clock,
+ * clock that can hold numbers from zero to the time limit. The time limit is
+ * fixed and set when the instance is created. The time value range from zero
+ * to the time limit-1. By for example creating the seconds in a digital clock,
  * the time values will range from 0-59. The changeTime() methode is used to
  * increase the time value by the time passed by, rolling over to zero if the
  * time limit is reached.
@@ -28,7 +27,7 @@ public class Time {
      */
     public Time(int timeValue, int timeLimit) {
         this.setTimeValue(timeValue);
-        this.setTimeLimit(timeLimit);
+        this.timeLimit = timeLimit;
     }
 
     /**
@@ -36,15 +35,15 @@ public class Time {
      * @return The current time value.
      */
     public int getTimeValue() {
-        return timeValue;
+        return this.timeValue;
     }
 
     /**
-     * Return the current time limit.
-     * @return The current time limit.
+     * Return the time limit.
+     * @return The time limit.
      */
-    public int getTimeLimit() {
-        return timeLimit;
+    public int getTimeLimit(){
+        return this.timeLimit;
     }
 
     /**
@@ -74,20 +73,6 @@ public class Time {
             this.timeValue = timeValue;
         } else {
             this.timeValue = 0;
-        }
-    }
-
-    /**
-     * Set the time limit to a new specified time limit. If the
-     * specified limit is less or equal to zero, the limit is set
-     * to the invalid parameter -1.
-     * @param timeLimit The new specified time limit.
-     */
-    public void setTimeLimit(int timeLimit) {
-        if (timeLimit > 0) {
-            this.timeLimit = timeLimit;
-        } else {
-            this.timeLimit = -1;
         }
     }
 
