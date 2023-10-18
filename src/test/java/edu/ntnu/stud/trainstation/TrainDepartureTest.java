@@ -15,7 +15,7 @@ class TrainDepartureTest {
    */
   @BeforeEach
   void setUp() {
-    this.trainDepartureTest = new TrainDeparture(12,0);
+    this.trainDepartureTest = new TrainDeparture(12,0, "re", 13);
   }
 
   @AfterEach
@@ -28,7 +28,6 @@ class TrainDepartureTest {
   @Test
   void testSetDelayPositive() {
     this.trainDepartureTest.setDelay(120);
-
     assertEquals(LocalTime.of(2,0),
         this.trainDepartureTest.getDelay(),
         "Test for delay not passed!");
@@ -44,7 +43,6 @@ class TrainDepartureTest {
   @Test
   void testSetDelayNegative() {
     this.trainDepartureTest.setDelay(-1,-10);
-
     assertEquals(LocalTime.of(0,0),
         this.trainDepartureTest.getDelay(),
         "Test for delay not passed!");
@@ -61,7 +59,6 @@ class TrainDepartureTest {
   @Test
   void testSetDepartureTimePositive() {
     this.trainDepartureTest.setDepartureTime(18,0);
-
     assertEquals(LocalTime.of(18,0),
         this.trainDepartureTest.getDepartureTime(),
         "Test for departure time not passed!");
@@ -73,16 +70,52 @@ class TrainDepartureTest {
   @Test
   void testSetDepartureTimeNegative() {
     this.trainDepartureTest.setDepartureTime(50,20);
-
     assertEquals(LocalTime.of(0,0),
         this.trainDepartureTest.getDepartureTime(),
         "Test for departure time not passed!");
 
     this.trainDepartureTest.setDepartureTime(2,-12);
-
     assertEquals(LocalTime.of(0,0),
         this.trainDepartureTest.getDepartureTime(),
         "Test for departure time not passed!");
+  }
 
+  /**
+   * Positive test to check for positive output.
+   */
+  @Test
+  void testSetTrainLinePositive() {
+    this.trainDepartureTest.setTrainLine("re",21);
+    assertTrue(this.trainDepartureTest.getTrainLine().equals("RE21"),
+        "Test for positive express train line not passed!");
+
+    this.trainDepartureTest.setTrainLine("fly", 2);
+    assertTrue(this.trainDepartureTest.getTrainLine().equals("FLY2"),
+        "Test for positive flight train line not passed!");
+
+    this.trainDepartureTest.setTrainLine("l", 13);
+    assertTrue(this.trainDepartureTest.getTrainLine().equals("L13"),
+        "Test for positive train line not passed!");
+  }
+
+  /**
+   * Negative test to check invalid train types and route numbers.
+   */
+  @Test
+  void testSetTrainLineNegative() {
+    this.trainDepartureTest.setTrainLine("re",211);
+    assertTrue(this.trainDepartureTest.getTrainLine().equals("INVALID"),
+        "Test for negative express train line not passed!");
+    this.trainDepartureTest.setTrainLine("flyy", 2);
+    assertTrue(this.trainDepartureTest.getTrainLine().equals("INVALID"),
+        "Test for negative flight train line not passed!");
+
+    this.trainDepartureTest.setTrainLine("l", -4);
+    assertTrue(this.trainDepartureTest.getTrainLine().equals("INVALID"),
+        "Test for negative flight train line not passed!");
+
+    this.trainDepartureTest.setTrainLine("1", 23);
+    assertTrue(this.trainDepartureTest.getTrainLine().equals("INVALID"),
+        "Test for negative train line not passed!");
   }
 }
