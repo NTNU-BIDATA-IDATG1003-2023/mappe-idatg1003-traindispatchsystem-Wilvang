@@ -15,7 +15,8 @@ class TrainDepartureTest {
    */
   @BeforeEach
   void setUp() {
-    this.trainDepartureTest = new TrainDeparture(12,0, "re", 13);
+    this.trainDepartureTest = new TrainDeparture(12,0, "Oslo",
+        "re", 11, 2, 3, 10);
   }
 
   @AfterEach

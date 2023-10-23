@@ -12,7 +12,7 @@ import java.time.LocalTime;
  * as a String. The string is made up of a prefix letter and a route number of
  * one or two positive digits (1-99). The train number does not have any mutator
  * method, since the TrainDispatch class is responsible for setting a unique train
- * number and to the train departure.
+ * number to the train departure.
  *
  *
  * @author Johan Fredrik Wilvang
