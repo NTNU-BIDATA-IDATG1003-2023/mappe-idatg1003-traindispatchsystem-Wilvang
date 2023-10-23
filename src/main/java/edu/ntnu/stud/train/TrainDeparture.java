@@ -2,13 +2,21 @@ package edu.ntnu.stud.train;
 
 import java.time.LocalTime;
 
+
 /**
  * The TrainDeparture class represent a train departure from a train station.
- * The train departure shows...
+ * The train departure contains information about the train's departure time,
+ * delay, destination, train line, train number and track number. The train
+ * departure time is represented as a digital clock. The train departure time
+ * and delay is an object form the LocalTime class. The train line is represented
+ * as a String. The string is made up of a prefix letter and a route number of
+ * one or two positive digits (1-99). The train number does not have any mutator
+ * method, since the TrainDispatch class is responsible for setting a unique train
+ * number and to the train departure.
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 1.3.0
+ * @version 1.4.0
  * @since 1.3.0
  */
 
@@ -21,25 +29,6 @@ public class TrainDeparture {
   private String destination;
   private int trackNumber;
 
-  /**
-   * Constructor for objects of class TrainDeparture. Set the departure time
-   * and train line, specified by the parameters.
-   *
-   * @param departureHour the specified hour of the train departure.
-   * @param departureMinute the specified minute of the train departure.
-   * @param trainType the specified train type of the train line.
-   * @param routeNumber the specified rout number of the train line.
-   * @since 1.3.0
-   */
-  public TrainDeparture(int departureHour, int departureMinute,
-      String trainType, int routeNumber){
-    this.setDepartureTime(departureHour, departureMinute);
-    this.setDelay(0);
-    this.setDestination("");
-    this.setTrainNumber(0);
-    this.setTrainLine(trainType, routeNumber);
-    this.setTrackNumber(0,0);
-  }
 
   /**
    * Constructor for objects of class TrainDeparture. Set the departure time, 
@@ -59,9 +48,9 @@ public class TrainDeparture {
   public TrainDeparture(int departureHour, int departureMinute, String destination,
       String trainType, int routeNumber, int trainNumber, int trackNumber, int totalTracks) {
     this.setDepartureTime(departureHour, departureMinute);
-    this.setDelay(0);
+    this.delay = LocalTime.of(0, 0);
     this.setDestination(destination);
-    this.setTrainNumber(trainNumber);
+    this.trainNumber = trainNumber;
     this.setTrainLine(trainType, routeNumber);
     this.setTrackNumber(trackNumber, totalTracks);
   }
@@ -241,23 +230,6 @@ public class TrainDeparture {
       this.destination = destination;
     } else {
       this.destination = "INVALID";
-    }
-  }
-
-  /**
-   * Set the train number to a new specified train number. The train
-   * number's area of validity is a positive number up to two digits.
-   * If the specified train number is outside the area of validity,
-   * the train number is set to zero.
-   *
-   * @param trainNumber the new specified train number.
-   * @since 1.3.0
-   */
-  public void setTrainNumber(int trainNumber) {
-    if (trainNumber > 0 && trainNumber < 100) {
-      this.trainNumber = trainNumber;
-    } else {
-      this.trainNumber = 0;
     }
   }
 
