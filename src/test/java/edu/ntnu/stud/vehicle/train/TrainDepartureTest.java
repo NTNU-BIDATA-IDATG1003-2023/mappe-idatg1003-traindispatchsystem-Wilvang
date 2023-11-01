@@ -1,4 +1,4 @@
-package edu.ntnu.stud.train;
+package edu.ntnu.stud.vehicle.train;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package edu.ntnu.stud.train;
+package edu.ntnu.stud.vehicle.train;
 
 import java.time.LocalTime;
 
@@ -16,16 +16,19 @@ import java.time.LocalTime;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 1.4.0
+ * @version 1.5.0
  * @since 1.3.0
  */
 
 public class TrainDeparture {
 
+  // required fields
   private LocalTime departureTime;
+  private final int trainNumber;
+
+  // optional fields
   private LocalTime delay;
   private String trainLine;
-  private int trainNumber;
   private String destination;
   private int trackNumber;
 

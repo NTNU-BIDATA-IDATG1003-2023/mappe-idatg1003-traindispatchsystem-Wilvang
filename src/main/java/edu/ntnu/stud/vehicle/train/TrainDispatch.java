@@ -1,6 +1,5 @@
-package edu.ntnu.stud.train;
+package edu.ntnu.stud.vehicle.train;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -16,13 +15,12 @@ import java.util.Comparator;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 1.4.0
+ * @version 1.5.0
  * @since 1.4.0
  */
 
 public class TrainDispatch {
   private final ArrayList<TrainDeparture> trainDepartureList;
-  private LocalTime currentTime;
   private int totalTracks;
   private int uniqueTrainNumber;
 
@@ -32,6 +30,7 @@ public class TrainDispatch {
    * the total amount of tracks in the train station and a unique train number
    * set to 1, incremented by 1 for each new train departure.
    *
+   * @since 1.4.0
    */
   public TrainDispatch() {
     this.trainDepartureList = new ArrayList<>();
@@ -46,6 +45,7 @@ public class TrainDispatch {
    * set to 1, incremented by 1 for each new train departure.
    *
    * @param totalTracks the total amount of tracks in the train station.
+   * @since 1.4.0
    */
   public TrainDispatch(int totalTracks) {
     this.trainDepartureList = new ArrayList<>();
@@ -57,6 +57,7 @@ public class TrainDispatch {
    * Returns the total amount of tracks in the train station.
    *
    * @return the total amount of tracks in the train station.
+   * @since 1.4.0
    */
   public int getTotalTracks() {
     return this.totalTracks;
@@ -68,6 +69,7 @@ public class TrainDispatch {
    * 0, the total amount of tracks is set to 0.
    *
    * @param totalTracks the total amount of tracks in the train station.
+   * @since 1.4.0
    */
   public void setTotalTracks(int totalTracks) {
     if (totalTracks > 0) {
@@ -75,6 +77,10 @@ public class TrainDispatch {
     } else {
       this.totalTracks = 0;
     }
+  }
+
+  public ArrayList<TrainDeparture> getTrainDepartureList(){
+    return this.trainDepartureList;
   }
 
   /**
@@ -88,6 +94,7 @@ public class TrainDispatch {
    * @param trainType the specified train type of the train line.
    * @param routeNumber the specified rout number of the train line.
    * @param trackNumber the specified track number the train departure takes place.
+   * @since 1.4.0
    */
   public void newTrainDeparture(int departureHour, int departureMinute,
       String destination, String trainType, int routeNumber, int trackNumber) {
