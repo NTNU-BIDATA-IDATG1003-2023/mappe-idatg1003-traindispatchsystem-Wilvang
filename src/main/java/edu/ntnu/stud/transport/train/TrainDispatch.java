@@ -1,5 +1,6 @@
-package edu.ntnu.stud.vehicle.train;
+package edu.ntnu.stud.transport.train;
 
+import edu.ntnu.stud.transport.train.TrainDeparture.TrainBuilder;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -20,7 +21,7 @@ import java.util.Comparator;
  */
 
 public class TrainDispatch {
-  private final ArrayList<TrainDeparture> trainDepartureList;
+  private ArrayList<TrainDeparture> trainDepartureList;
   private int totalTracks;
   private int uniqueTrainNumber;
 
@@ -90,19 +91,16 @@ public class TrainDispatch {
    *
    * @param departureHour the specified hour of the train departure.
    * @param departureMinute the specified minute of the train departure.
-   * @param destination the specified destination of the train.
-   * @param trainType the specified train type of the train line.
-   * @param routeNumber the specified rout number of the train line.
-   * @param trackNumber the specified track number the train departure takes place.
    * @since 1.4.0
    */
-  public void newTrainDeparture(int departureHour, int departureMinute,
-      String destination, String trainType, int routeNumber, int trackNumber) {
-    TrainDeparture trainDeparture = new TrainDeparture(departureHour, departureMinute,
-        destination, trainType, routeNumber, this.uniqueTrainNumber, trackNumber,
-        this.totalTracks);
+  public void newTrainDeparture(int departureHour, int departureMinute){
+    TrainBuilder trainBuilder = new TrainBuilder(departureHour, departureMinute, this.uniqueTrainNumber);
+    TrainDeparture trainDeparture = trainBuilder.build();
     this.trainDepartureList.add(trainDeparture);
     this.trainDepartureList.sort(Comparator.comparing(TrainDeparture::getDepartureTime));
     this.uniqueTrainNumber++;
   }
+
+
+
 }

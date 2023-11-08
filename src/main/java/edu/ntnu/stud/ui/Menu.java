@@ -1,6 +1,6 @@
 package edu.ntnu.stud.ui;
 
-import edu.ntnu.stud.vehicle.train.TrainDispatch;
+import edu.ntnu.stud.transport.train.TrainDispatch;
 import edu.ntnu.stud.utility.Handler;
 import java.time.LocalTime;
 
@@ -9,8 +9,8 @@ public class Menu {
 
   private boolean start;
   private Handler handler;
-  private Message message;
-  private TrainDispatch trainDispatch;
+  private Print message;
+
   private LocalTime currentTime;
 
   /**
@@ -22,8 +22,8 @@ public class Menu {
   public Menu() {
     this.start = false;
     this.handler = new Handler();
-    this.message = new Message();
-    trainDispatch = new TrainDispatch();
+    this.message = new Print();
+
     currentTime = LocalTime.of(0,0);
   }
 
@@ -33,7 +33,7 @@ public class Menu {
     this.currentTime = this.handler.inputTime();
   }
 
-  public void start() {
+  public void start(TrainDispatch trainDispatch) {
     while (!this.start) {
       message.clockMessage(currentTime);
       message.overviewMessage();

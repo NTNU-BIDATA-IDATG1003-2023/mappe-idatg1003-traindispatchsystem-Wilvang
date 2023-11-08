@@ -77,6 +77,7 @@ public class Handler {
         int minute = Integer.parseInt(time.substring(3, 5));
         return hour < 24 && hour >= 0 && minute < 60 && minute >= 0
             && time.charAt(2) == ':';
+
       } catch (NumberFormatException e) {
         return false;
       }
@@ -108,6 +109,28 @@ public class Handler {
     return LocalTime.parse(clockTime);
   }
 
+  /**
+   * Return true if the train type is one of the following prefix letters; "L" (local train), "F"
+   * (long-distance train), "R" (regional train), "RE" (regional express train), "FLY" (flight
+   * train). If the train type is not a valid prefix letter, the check returns false.
+   *
+   * @param trainType the specified train type.
+   * @return boolean value as the result.
+   * @since 1.2.0
+   */
+  private boolean checkTrainType(String trainType) {
+    boolean flag = false;
+    if ((trainType.charAt(0) == 'R' || trainType.charAt(0) == 'L'
+        || trainType.charAt(0) == 'F' && trainType.length() == 1)
 
+        || (trainType.charAt(0) == 'R' && trainType.charAt(1) == 'E'
+        && trainType.length() == 2)
+
+        || (trainType.charAt(0) == 'F' && trainType.charAt(1) == 'L'
+        && trainType.charAt(2) == 'Y' && trainType.length() == 3)) {
+      flag = true;
+    }
+    return flag;
+  }
 
 }
