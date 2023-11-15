@@ -12,7 +12,7 @@ import java.time.LocalTime;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 1.8.0
+ * @version 1.9.0
  * @since 1.6.0
  */
 
