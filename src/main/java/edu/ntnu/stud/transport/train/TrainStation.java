@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 1.9.0
+ * @version 2.0.0
  * @since 1.7.0
  */
 
@@ -154,7 +154,7 @@ public final class TrainStation {
 
   /**
    * Search for the train departure with the specified train number. If the train number does not
-   * exist in the train register, the method will return null.
+   * exist in the train register, the method will return <code>null</code>.
    *
    * @param trainNumber The train number of the train departure.
    * @return The train departure with the specified train number as an iterator.
@@ -166,7 +166,7 @@ public final class TrainStation {
 
   /**
    * Search for all train departures with the specified destination. If there isn't any train
-   * departures headed to the destination, the method will return null.
+   * departures headed to the destination, the method will return <code>null</code>.
    *
    *
    * @param destination The destination of the train departure.
