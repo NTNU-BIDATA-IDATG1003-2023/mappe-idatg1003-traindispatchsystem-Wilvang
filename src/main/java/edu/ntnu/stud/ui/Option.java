@@ -93,7 +93,7 @@ public class Option {
   public int addTrainDeparture() {
     String departureTime = handler.validateTime("the departure time");
     int trainNumber = handler.inputInteger("train number associated with the departure"
-        + "\nThe train number must be a whole number up to \n3 digits.");
+        + "\nThe train number must be a whole number up to \n4 digits.");
     String trainLine = handler.inputString("train line for this train departure"
         + "\n(e.g. L2, RE11, F3, etc.)");
     String destination = handler.inputString("train's final destination");

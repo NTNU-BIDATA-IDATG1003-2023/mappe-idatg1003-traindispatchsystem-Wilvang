@@ -2,6 +2,7 @@ package edu.ntnu.stud.utility;
 
 import edu.ntnu.stud.ui.ConsoleColor;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 
@@ -93,7 +94,7 @@ public class InputValidator {
    * user until the format is correct, unless the user writes the keyword 'q' to quit the action.
    *
    * @return The user input as a string.
-   * @since 1.8.0
+   * @since 2.1.1
    */
   public String validateTime(){
     correctInput = false;
@@ -103,16 +104,12 @@ public class InputValidator {
         + "\nYou can press 'q' if you want to to quit this action ::");
     while (!correctInput) {
       time = inputReader.nextLine();
-      if (time.equals("q")){
+      try {
+        LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
         correctInput = true;
-      } else {
-        try {
-          LocalTime.parse(time);
-          correctInput = true;
-        } catch (Exception e) {
-          System.err.println("The format provided was not accepted. Press 'q' to quit this action."
-              + "\nPlease make sure to use the 24-hour clock format (HH:mm) ::");
-        }
+      } catch (Exception e) {
+        System.err.println("The format provided was not accepted."
+            + "\nPlease make sure to use the 24-hour clock format (HH:mm) ::");
       }
     }
     return time;
@@ -126,7 +123,7 @@ public class InputValidator {
    *
    * @param typeOfInput The type of input that the user is prompted to enter.
    * @return The user input as a string.
-   * @since 2.1.0
+   * @since 2.1.1
    */
   public String validateTime(String typeOfInput){
     correctInput = false;
@@ -136,7 +133,7 @@ public class InputValidator {
     while (!correctInput) {
       time = inputReader.nextLine();
       try {
-        LocalTime.parse(time);
+        LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
         correctInput = true;
       } catch (Exception e) {
         System.err.println("The format provided was not accepted."
