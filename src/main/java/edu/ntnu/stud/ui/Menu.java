@@ -8,8 +8,8 @@ package edu.ntnu.stud.ui;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.0.0
- * @since 2.0.0
+ * @version 2.1.0
+ * @since 2.1.0
  */
 
 public class Menu {
@@ -34,6 +34,7 @@ public class Menu {
    * @since 2.0.0
    */
   public void init() {
+    option.initTrainDepartures();
     message.printWelcome();
     option.updateClock();
   }
@@ -66,30 +67,24 @@ public class Menu {
   public void mainMenu(int select) {
     switch (select) {
       case Selection.INFORMATION_TABLE:
-        // print overview
+        message.printTrainInformationTable(option.getTrainRegister());
         break;
       case Selection.ADD_TRAIN:
-        // add new train departure
-        message.addTrainDepartureOption();
-        newTrainMenu();
+        addTrainMenu();
         break;
       case Selection.ASSIGN_TRACK:
-        // assign track
         break;
       case Selection.ADD_DELAY:
-        // add delay
         break;
       case Selection.SEARCH_TRAIN:
-        // search for train (train number or destination)
         searchMenu();
         break;
       case Selection.UPDATE_CLOCK:
-        // update clock
         message.updateClockOption();
         option.updateClock();
         break;
       case Selection.EXIT:
-        // exit
+        message.printExit();
         break;
       default:
         message.printInvalidOption();
@@ -108,13 +103,10 @@ public class Menu {
     this.message.printSearchMenu();
     switch(this.option.selectOption()) {
       case Selection.SEARCH_TRAIN_NUMBER:
-        // search for train by train number
         break;
       case Selection.SEARCH_DESTINATION:
-        // search for train by destination)
         break;
       case Selection.RETURN_MAIN_MENU:
-        // exit
         break;
       default:
         this.message.printInvalidOption();
@@ -129,12 +121,39 @@ public class Menu {
    *
    * @since 2.0.0
    */
-  public void newTrainMenu(){
+  public void addTrainMenu(){
     message.addTrainDepartureOption();
-    if(!option.addTrainDeparture()){
-      message.print("Train departure was added successfully");
+    if(option.askToContinue("continue adding a new train departure")) {
+      addTrainSubMenu();
+    }
+  }
+
+  /**
+   * Displays the menu for adding a new train departure to the user. The method prompts the user to
+   * enter the train number, the train line, the destination, the departure time and the delay. If
+   * the train departure is successfully added, the method will prompt the user an option to assign
+   * a track number to the train departure. If the train departure is not successfully added, the
+   * method will prompt the user an option to try again.
+   *
+   * @since 2.1.0
+   */
+  public void addTrainSubMenu(){
+    message.printStatusBar(option.displayClock(), option.numberOfTrainDepartures());
+    message.printSeparator();
+    int before = option.numberOfTrainDepartures();
+    int trainNumber = option.addTrainDeparture();
+    int after = option.numberOfTrainDepartures();
+    if(before < after){
+      message.printAddedTrain(option.searchByTrainNumber(trainNumber));
+      if (option.askToContinue("assign the track number")){
+        option.assignTrack(option.searchByTrainNumber(trainNumber));
+      }
     } else {
       message.invalidTrainDeparture();
+      message.printSeparator();
+      if (option.askToContinue("try again?")){
+        addTrainSubMenu();
+      }
     }
   }
 }

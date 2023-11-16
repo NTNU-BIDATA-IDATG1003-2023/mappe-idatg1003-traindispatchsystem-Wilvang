@@ -2,17 +2,17 @@ package edu.ntnu.stud.ui;
 
 
 /**
- * The ColorPrint class is used to display messages in different colors to the console. The class
+ * The ConsoleColor class is used to display messages in different colors to the console. The class
  * contains methods to print messages in different colors, such as red, green, yellow, blue, purple
  * and cyan. The messages can also be displayed with background colors and bold characters.
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.0.0
- * @since 1.9.0
+ * @version 2.1.0
+ * @since 2.1.0
  */
 
-public class ColorPrint {
+public class ConsoleColor {
   // Ansi colour codes for terminal output:
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_BLACK = "\033[0;90m";
@@ -31,6 +31,9 @@ public class ColorPrint {
   public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
   public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
   public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+  public static final String BLUE_BOLD = "\033[1;94m";
+  public static final String PURPLE_BOLD = "\033[1;95m";
+  public static final String CYAN_BOLD= "\033[1;96m";
   public static final String BLACK_BOLD = "\033[1;30m";
   public static final String WHITE_BOLD = "\033[1;97m";
 
@@ -205,4 +208,35 @@ public class ColorPrint {
   public String printWhiteBold(String message) {
     return WHITE_BOLD + message + ANSI_RESET;
   }
+
+  /**
+   * Converts the message to a string to bold characters with the specified color.
+   *
+   * @param message The message to be printed.
+   * @return The message to be printed in bold characters with the specified color.
+   */
+  public String printBlueBold(String message) {
+    return BLUE_BOLD + message + ANSI_RESET;
+  }
+
+  /**
+   * Converts the message to a string to bold characters with the specified color.
+   *
+   * @param message The message to be printed.
+   * @return The message to be printed in bold characters with the specified color.
+   */
+  public String printPurpleBold(String message) {
+    return PURPLE_BOLD + message + ANSI_RESET;
+  }
+
+  /**
+   * Converts the message to a string to bold characters with the specified color.
+   *
+   * @param message The message to be printed.
+   * @return The message to be printed in bold characters with the specified color.
+   */
+  public String printCyanBold(String message) {
+    return CYAN_BOLD + message + ANSI_RESET;
+  }
 }
+

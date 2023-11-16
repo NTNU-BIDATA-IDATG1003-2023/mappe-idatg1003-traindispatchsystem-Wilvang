@@ -12,13 +12,13 @@ import java.util.Iterator;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.0.0
- * @since 1.8.0
+ * @version 2.1.0
+ * @since 2.1.0
  */
 
 public class Print {
 
-  private final ColorPrint color;
+  private final ConsoleColor color;
 
   /**
    * Creates object of class Print. The object contains an object of class ColorPrint.
@@ -26,7 +26,7 @@ public class Print {
    * @since 1.9.0
    */
   public Print() {
-    this.color = new ColorPrint();
+    this.color = new ConsoleColor();
   }
 
   /**
@@ -37,6 +37,17 @@ public class Print {
    */
   public void printSeparator() {
     color.printCyan("-------------------------------------------------------");
+  }
+
+  /**
+   * Prints a large separator to the console. The large separator is used to separate the train
+   * information table
+   *
+   * @since 2.1.0
+   */
+  public void printLargeSeparator() {
+    color.printBlue("--------------------------------------------------------------------------"
+        + "----------------------------------------------");
   }
 
   /**
@@ -59,10 +70,10 @@ public class Print {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Welcome to the Train Dispatch System! "));
     color.printBlue("\nThis system is designed to help you manage the train");
-    color.printBlue("departures at your station. To get started, please write");
-    color.printBlue("the current time in the format (hh:mm). If you are unsure");
-    color.printBlue("or don't want to write the time, you can write 'q' and the");
-    color.printBlue("time will be set to 00:00.");
+    color.printBlue("departures at your station. To get started, please ");
+    color.printBlue("write the current time in the format (HH:mm). If you");
+    color.printBlue("are unsure or don't want to write the time, you can");
+    color.printBlue("write the keyword 'q' to set the time to 00:00.");
     printSeparator();
   }
 
@@ -71,9 +82,11 @@ public class Print {
    *
    * @since 1.9.0
    */
-  public void goodByeMessage() {
+  public void printExit() {
     printSeparator();
-    color.printWhite("Thank you for using the train dispatch application!");
+    color.printBlueBackground(color.printWhiteBold(" Thank you for using the train dispatch system! "));
+    color.printBlue("\nWe hope to see you again soon! Have a great rest of ");
+    color.printBlue("your day!");
   }
 
   /**
@@ -84,8 +97,8 @@ public class Print {
    * @since 1.9.0
    */
   public String clockMessage(LocalTime time) {
-    return ColorPrint.ANSI_PURPLE + "The time is: " + ColorPrint.ANSI_PURPLE_BACKGROUND
-        + color.printWhiteBold(" " + time + " ");
+    return ConsoleColor.ANSI_PURPLE + "The time is: " + ConsoleColor.ANSI_PURPLE_BACKGROUND
+        + color.printWhiteBold(" " + time + " ") + ConsoleColor.ANSI_RESET;
   }
 
   /**
@@ -96,8 +109,9 @@ public class Print {
    * @return The number of train departures due today.
    */
   public String printNumberOfTrains(int numberOfTrains) {
-    return ColorPrint.ANSI_PURPLE + "Train departures today: "
-        + ColorPrint.ANSI_PURPLE_BACKGROUND + color.printWhiteBold(" " + numberOfTrains + " ");
+    return ConsoleColor.ANSI_PURPLE + "Train departures today: "
+        + ConsoleColor.ANSI_PURPLE_BACKGROUND + color.printWhiteBold(" " + numberOfTrains + " ")
+        + ConsoleColor.ANSI_RESET;
   }
 
   /**
@@ -110,8 +124,7 @@ public class Print {
    */
   public void printStatusBar(LocalTime time, int numberOfTrains) {
     printSeparator();
-    color.printPurple(clockMessage(time) + ColorPrint.ANSI_RESET + "    " +
-        printNumberOfTrains(numberOfTrains));
+    System.out.printf("%-50s %-50s%n", clockMessage(time), printNumberOfTrains(numberOfTrains));
   }
 
   /**
@@ -123,13 +136,13 @@ public class Print {
   public void printMainManu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
-    color.printWhite("[1]" + ColorPrint.ANSI_BLUE + " View information table");
-    color.printWhite("[2]" + ColorPrint.ANSI_BLUE + " Add new train departure");
-    color.printWhite("[3]" + ColorPrint.ANSI_BLUE + " Assign track");
-    color.printWhite("[4]" + ColorPrint.ANSI_BLUE + " Add delay");
-    color.printWhite("[5]" + ColorPrint.ANSI_BLUE + " Search for train");
-    color.printWhite("[6]" + ColorPrint.ANSI_BLUE + " Update clock");
-    color.printWhite("[9]" + ColorPrint.ANSI_BLUE + " Exit");
+    color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " View information table");
+    color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Add new train departure");
+    color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Assign track");
+    color.printWhite("[4]" + ConsoleColor.ANSI_BLUE + " Add delay");
+    color.printWhite("[5]" + ConsoleColor.ANSI_BLUE + " Search for train");
+    color.printWhite("[6]" + ConsoleColor.ANSI_BLUE + " Update clock");
+    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + " Exit");
     printSeparator();
   }
 
@@ -142,9 +155,9 @@ public class Print {
   public void printSearchMenu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
-    color.printWhite("[1]" + ColorPrint.ANSI_BLUE + " Search by train number.");
-    color.printWhite("[2]" + ColorPrint.ANSI_BLUE + " Search by destination.");
-    color.printWhite("[9]" + ColorPrint.ANSI_BLUE + " Return to main menu.");
+    color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Search by train number.");
+    color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Search by destination.");
+    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + " Return to main menu.");
     printSeparator();
   }
 
@@ -157,7 +170,8 @@ public class Print {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Changing the system time of the application "));
     color.printBlue("\nCAUTION: The train departures that is due to depart");
-    color.printBlue("before the new selected time, will be removed.");
+    color.printBlue("before the new selected time, " +
+        color.printBlueBold("will be removed."));
     printSeparator();
   }
 
@@ -169,12 +183,15 @@ public class Print {
   public void addTrainDepartureOption() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Adding a new train departure "));
-    color.printBlue("\nThe mandatory information that is required to add a new train departure is");
-    color.printBlue("the departure time, train number, destination and train line.");
-    color.printBlue("The new train departure must have a unique train number.");
-    color.printBlue("If the train number already exists, the new train departure will not be added.");
-    color.printBlue("The track number is set to -1 to default. You will be prompted an option to change");
-    color.printBlue("this later.");
+    color.printBlue("\nThe mandatory information that is required to add a new ");
+    color.printBlue("train departure is the departure time, train number, ");
+    color.printBlue("destination and train line. The new train departure must ");
+    color.printBlue("have a unique train number. The track number is set to -1" );
+    color.printBlue("to default. You will be prompted an option to change this ");
+    color.printBlue("later.");
+    color.printBlue("\nCATION: If the train number already exists or the train");
+    color.printBlue("already has departed, the new train departure "
+        + color.printBlueBold("will \nnot be added"));
     printSeparator();
   }
 
@@ -187,9 +204,9 @@ public class Print {
   public void printTrainDeparture(Iterator<TrainDeparture> trainIterator){
     while (trainIterator.hasNext()){
       TrainDeparture train = trainIterator.next();
-      System.out.printf(ColorPrint.ANSI_BLUE + "%-20s %-20s %-20s %-20s %-20s%n",
-          train.getTrainNumber(),train.getDepartureTime(), train.getDelay().getMinute() + " minutes",
-          train.getDestination(), train.getTrackNumber());
+      System.out.printf(ConsoleColor.ANSI_WHITE + "%-20s %-20s %-20s %-20s %-20s %-20s%n",
+          train.getTrainNumber(),train.getRealDepartureTime(), train.getDelay().getMinute()
+              + " minutes", train.getTrainLine(), train.getDestination(), train.getTrackNumber());
     }
   }
 
@@ -201,13 +218,13 @@ public class Print {
    */
   public void printTrainInformationTable(Iterator<TrainDeparture> trainIterator) {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Train Departure Table "));
+    color.printBlueBackground(color.printWhiteBold(" Train Information Table "));
     color.printBlue("");
-    System.out.printf(ColorPrint.ANSI_BLUE + "%-20s %-20s %-20s %-20s %-20s%n",
-        "Train number:", "Departure time:", "Delay:", "Destination:", "Track number:");
-    printSeparator();
+    System.out.printf(ConsoleColor.BLUE_BOLD + "%-20s %-20s %-20s %-20s %-20s %-20s%n",
+        "Train number:", "Departure time:", "Delay:", "Line:", "Destination:", "Track number:");
+    printLargeSeparator();
     printTrainDeparture(trainIterator);
-    printSeparator();
+    printLargeSeparator();
   }
 
   /**
@@ -227,7 +244,25 @@ public class Print {
    */
   public void invalidTrainDeparture() {
     System.err.println("The train departure you are trying to add is invalid.");
-    System.err.println("Please make sure that the train number is unique and that the ");
-    System.err.println("departure time is not before the current time.");
+    System.err.println("Please make sure that the train number is unique and ");
+    System.err.println("that thedeparture time is not before the current time.");
+  }
+
+  /**
+   * Prints the newly added train departure.
+   *
+   * @param trainIterator The train iterator containing the train departures.
+   */
+  public void printAddedTrain(Iterator<TrainDeparture> trainIterator){
+    printSeparator();
+    color.printBlueBackground(color.printWhiteBold(" New Train Departure "));
+    color.printBlue("");
+
+    System.out.printf(ConsoleColor.BLUE_BOLD + "%-20s %-20s %-20s %-20s %-20s %-20s%n",
+        "Train number:", "Departure time:", "Delay:", "Line:", "Destination:", "Track number:");
+    printLargeSeparator();
+    printTrainDeparture(trainIterator);
+    printLargeSeparator();
+    printSeparator();
   }
 }

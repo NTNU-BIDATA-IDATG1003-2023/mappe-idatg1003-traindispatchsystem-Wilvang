@@ -7,7 +7,7 @@ package edu.ntnu.stud.ui;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.0.0
+ * @version 2.1.0
  * @since 2.0.0
  */
 

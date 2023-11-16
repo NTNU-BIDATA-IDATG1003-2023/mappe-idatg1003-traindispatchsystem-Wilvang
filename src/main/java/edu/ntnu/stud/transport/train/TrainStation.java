@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.7.0
  */
 

@@ -12,8 +12,8 @@ import java.time.LocalTime;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.0.0
- * @since 1.6.0
+ * @version 2.1.0
+ * @since 2.1.0
  */
 
 public class TrainDeparture {
@@ -111,8 +111,7 @@ public class TrainDeparture {
 
   /**
    * Increment the train's delay with a specified number of minutes delayed. If the specified
-   * number of minutes delayed is less than zero, do nothing. The train departure time is
-   * incremented proportionally to the delayed time.
+   * number of minutes delayed is less than zero, do nothing.
    *
    * @param minutesDelay The specified number of minutes delayed.
    * @since 1.0.0
@@ -120,28 +119,20 @@ public class TrainDeparture {
   public void setDelay(int minutesDelay) {
     if (minutesDelay > 0) {
       this.delay = this.delay.plusMinutes(minutesDelay);
-      this.departureTime = this.departureTime.plusMinutes(minutesDelay);
     }
   }
+
   /**
-   * Increment the train's delay with a specified number hours delayed and minutes delayed. The
-   * specified number of hours delayed or minutes delayed is only incremented with positive values.
-   * The train departure time is incremented proportionally to the delayed time.
+   * Return the train's real departure time. The real departure time is the planned departure time
+   * incremented with the delay.
    *
-   * @param hoursDelay The specified number of hours delayed.
-   * @param minutesDelay The specified number of minutes delayed.
-   * @since 1.0.0
+   * @return The real departure time as a digital clock.
+   * @since 2.1.0
    */
-  public void setDelay(int hoursDelay, int minutesDelay) {
-    if (hoursDelay > 0) {
-      this.delay = this.delay.plusHours(hoursDelay);
-      this.departureTime = this.departureTime.plusHours(hoursDelay);
-    }
-    if (minutesDelay > 0) {
-      this.delay = this.delay.plusMinutes(minutesDelay);
-      this.departureTime = this.departureTime.plusMinutes(minutesDelay);
-    }
+  public LocalTime getRealDepartureTime(){
+    return this.departureTime.plusMinutes(this.delay.getMinute());
   }
+
   /**
    * Set the train's departure time to the specified time of the departure. If the specified time
    * is an invalid 24-hour clock format (HH:mm), the departure time is set to 00:00.
@@ -216,7 +207,7 @@ public class TrainDeparture {
     if (trackNumber > 0 && trackNumber <= 100) {
       this.trackNumber = trackNumber;
     } else {
-      this.trackNumber = 0;
+      this.trackNumber = -1;
     }
   }
 }
