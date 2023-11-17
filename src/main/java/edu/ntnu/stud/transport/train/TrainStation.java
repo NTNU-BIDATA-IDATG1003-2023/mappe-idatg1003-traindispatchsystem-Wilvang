@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.1.0
- * @since 1.7.0
+ * @version 2.2.0
+ * @since 2.2.0
  */
 
 public final class TrainStation {
@@ -71,6 +71,18 @@ public final class TrainStation {
   public Iterator<TrainDeparture> getTrainRegister(){
     return this.trainRegister.values().stream()
         .sorted(Comparator.comparing(TrainDeparture::getDepartureTime)).iterator();
+  }
+
+  /**
+   * Returns <code>true</code> if the train number is unique for each train departure. If the train
+   * number is not unique, the method will return <code>false</code>.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @return <code>true</code> if the train number is unique for each train departure.
+   * @since 2.2.0
+   */
+  public boolean isTrainNumberUnique(int trainNumber){
+    return !this.trainRegister.containsKey(trainNumber);
   }
 
   /**
@@ -130,19 +142,6 @@ public final class TrainStation {
   }
 
   /**
-   * Assign a track to the train departure with the specified train number. The track number is
-   * represented as an integer between 1-100. If the train number does not exist in the train
-   * register, the track number is not assigned to any train departure.
-   *
-   * @param trainNumber The train number of the train departure.
-   * @param trackNumber The track number of the train departure.
-   * @since 1.6.0
-   */
-  public void assignTrack(int trainNumber, int trackNumber){
-    this.trainRegister.get(trainNumber).setTrackNumber(trackNumber);
-  }
-
-  /**
    * Removes the train departure with the specified train number from the train register.
    *
    * @param trainNumber The train number of the train departure.
@@ -177,5 +176,98 @@ public final class TrainStation {
     return this.trainRegister.values().stream()
         .filter(train -> train.getDestination().equalsIgnoreCase(destination))
         .collect(Collectors.toCollection(ArrayList::new)).iterator();
+  }
+
+  /**
+   * Assign a track to the train departure with the specified train number. The track number is
+   * represented as an integer between 1-100. If the train number does not exist in the train
+   * register, the track number is not assigned to any train departure.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @param trackNumber The track number of the train departure.
+   * @since 2.2.0
+   */
+  public void setNewTrackNumber(int trainNumber, int trackNumber){
+    Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
+    if (trainIterator.hasNext()){
+      trainIterator.next().setTrackNumber(trackNumber);
+    }
+  }
+
+  /**
+   * Set a new train number for the train departure associated with specified train number. The
+   * train number is unique for each train departure. If the train number already exists in the
+   * train register, the train number will not be changed.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @param newTrainNumber The new train number of the train departure.
+   * @since 2.2.0
+   */
+  public void setNewTrainNumber(int trainNumber, int newTrainNumber){
+    Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
+    if (trainIterator.hasNext()){
+      trainIterator.next().setTrainNumber(newTrainNumber);
+    }
+  }
+
+  /**
+   * Set a new end destination for the train departure associated with specified train number. If
+   * the train number does not exist in the train register, the destination will not be changed.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @param newDestination The new destination of the train departure.
+   * @since 2.2.0
+   */
+  public void setNewDestination(int trainNumber, String newDestination){
+    Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
+    if (trainIterator.hasNext()){
+      trainIterator.next().setDestination(newDestination);
+    }
+  }
+
+  /**
+   * Set a new departure time for the train departure associated with specified train number. If
+   * the train number does not exist in the train register, the departure time will not be changed.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @param newDepartureTime The new departure time of the train departure.
+   * @since 2.2.0
+   */
+  public void setNewDepartureTime(int trainNumber, String newDepartureTime){
+    Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
+    if (trainIterator.hasNext()){
+      trainIterator.next().setDepartureTime(newDepartureTime);
+    }
+  }
+
+  /**
+   * Set a new train line for the train departure associated with specified train number. If the
+   * train number does not exist in the train register, the train line will not be changed.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @param newTrainLine The new train line of the train departure.
+   * @since 2.2.0
+   */
+  public void setNewTrainLine(int trainNumber, String newTrainLine){
+    Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
+    if (trainIterator.hasNext()){
+      trainIterator.next().setTrainLine(newTrainLine);
+    }
+  }
+
+  /**
+   * Set a new delay for the train departure associated with specified train number. The delay is
+   * set by the number of minutes delayed. If the train number does not exist in the train register,
+   * the delay will not be changed.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @param newDelay The specified amount of minutes delayed.
+   * @since 2.2.0
+   */
+  public void setNewDelay(int trainNumber, int newDelay){
+    Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
+    if (trainIterator.hasNext()){
+      trainIterator.next().setDelay(newDelay);
+    }
   }
 }

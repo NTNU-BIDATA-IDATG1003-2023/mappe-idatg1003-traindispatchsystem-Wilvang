@@ -13,8 +13,8 @@ import java.time.format.DateTimeFormatter;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.1.1
- * @since 2.1.1
+ * @version 2.2.0
+ * @since 2.2.0
  */
 
 public class TrainDeparture {
@@ -59,6 +59,16 @@ public class TrainDeparture {
   }
 
   /**
+   * Return the train's current delay in minutes.
+   *
+   * @return The current delay in minutes.
+   * @since 2.2.0
+   */
+  public int getMinutesDelay(){
+    return this.delay.getMinute() + this.delay.getHour() * 60;
+  }
+
+  /**
    * Return the train's departure time.
    *
    * @return The departure time as a digital clock.
@@ -76,7 +86,7 @@ public class TrainDeparture {
    * @since 2.1.0
    */
   public LocalTime getRealDepartureTime(){
-    return this.departureTime.plusMinutes(this.delay.getMinute());
+    return this.departureTime.plusMinutes(getMinutesDelay());
   }
 
   /**
@@ -121,12 +131,13 @@ public class TrainDeparture {
 
   /**
    * Increment the train's delay with a specified number of minutes delayed. If the specified
-   * number of minutes delayed is less than zero, do nothing.
+   * number of minutes delayed is less than zero, the delay is set to 00:00.
    *
    * @param minutesDelay The specified number of minutes delayed.
-   * @since 1.0.0
+   * @since 2.1.1
    */
   public void setDelay(int minutesDelay) {
+    this.delay = LocalTime.of(0, 0);
     if (minutesDelay > 0) {
       this.delay = this.delay.plusMinutes(minutesDelay);
     }

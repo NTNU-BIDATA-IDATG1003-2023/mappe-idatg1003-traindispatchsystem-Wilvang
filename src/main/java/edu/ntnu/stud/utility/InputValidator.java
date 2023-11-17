@@ -104,12 +104,16 @@ public class InputValidator {
         + "\nYou can press 'q' if you want to to quit this action ::");
     while (!correctInput) {
       time = inputReader.nextLine();
-      try {
-        LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+      if (time.equalsIgnoreCase("q")){
         correctInput = true;
-      } catch (Exception e) {
-        System.err.println("The format provided was not accepted."
-            + "\nPlease make sure to use the 24-hour clock format (HH:mm) ::");
+      } else {
+        try {
+          LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+          correctInput = true;
+        } catch (Exception e) {
+          System.err.println("The format provided was not accepted."
+              + "\nPlease make sure to use the 24-hour clock format (HH:mm) ::");
+        }
       }
     }
     return time;

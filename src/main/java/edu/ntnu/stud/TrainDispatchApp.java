@@ -10,7 +10,7 @@ import edu.ntnu.stud.ui.Menu;
  *
  *
  *  @author Johan Fredrik Wilvang
- *  @version 2.0.0
+ *  @version 2.2.0
  *  @since 1.3.0
  */
 public class TrainDispatchApp {

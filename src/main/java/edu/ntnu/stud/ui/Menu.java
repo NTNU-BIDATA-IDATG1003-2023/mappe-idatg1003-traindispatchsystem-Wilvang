@@ -1,5 +1,7 @@
 package edu.ntnu.stud.ui;
 
+import edu.ntnu.stud.transport.train.TrainDeparture;
+import java.util.Iterator;
 
 /**
  * The Menu class is used to display menus to the user. The class contains methods to print
@@ -48,7 +50,7 @@ public class Menu {
    */
   public void start() {
     int selectedOption = 0;
-    while (selectedOption != 9) {
+    while (selectedOption != Selection.EXIT) {
       this.message.printStatusBar(this.option.displayClock(),
           this.option.numberOfTrainDepartures());
       this.message.printMainManu();
@@ -72,7 +74,12 @@ public class Menu {
       case Selection.ADD_TRAIN:
         addTrainMenu();
         break;
+      case Selection.EDIT_TRAIN:
+        message.printTrainInformationTable(option.getTrainRegister());
+        editTrainMenu();
+        break;
       case Selection.ASSIGN_TRACK:
+        assignTrackMenu();
         break;
       case Selection.ADD_DELAY:
         break;
@@ -87,7 +94,7 @@ public class Menu {
         message.printExit();
         break;
       default:
-        message.printInvalidOption();
+        message.errorOption();
     }
   }
 
@@ -109,8 +116,101 @@ public class Menu {
       case Selection.RETURN_MAIN_MENU:
         break;
       default:
-        this.message.printInvalidOption();
+        this.message.errorOption();
         searchMenu();
+    }
+  }
+
+  /**
+   * Displays the menu for assigning a track number to the user. The method prompts the user to
+   * select an option from the assign track menu. The method will call the corresponding method
+   * based on the user input.
+   *
+   * @since 2.2.0
+   */
+  public void assignTrackMenu(){
+    this.message.printStatusBar(this.option.displayClock(),
+        this.option.numberOfTrainDepartures());
+    this.message.printSelectTrainMenu();
+    switch(this.option.selectOption()) {
+      case Selection.SEARCH_TRAIN_NUMBER:
+        message.printTrainInformationTable(option.getTrainRegister());
+        option.assignTrack(option.searchByTrainNumber().next().getTrainNumber());
+        break;
+      case Selection.RETURN_MAIN_MENU:
+        break;
+      default:
+        this.message.errorOption();
+        assignTrackMenu();
+    }
+  }
+
+  /**
+   * Displays the menu for editing a train departure to the user. The method prompts the user to
+   * enter the train number of the train departure to edit. If a train departure is selected, the
+   * method will open the submenu. If no train departure is selected, the method will display an
+   * error message and prompt the user to try again.
+   *
+   * @since 2.2.0
+   */
+  public void editTrainMenu(){
+    Iterator<TrainDeparture> trainIterator = option.searchByTrainNumber();
+    if (trainIterator.hasNext()){
+      editTrainSubmenu(trainIterator);
+    } else {
+      message.errorEmptyIterator();
+      editTrainMenu();
+    }
+  }
+
+  /**
+   * Displays the submenu for editing a train departure to the user. The method will call the
+   * corresponding method based on the selected option. The method will continue to display the
+   * submenu until the user selects the RETURN_TO_MAIN_MENU option.
+   *
+   * @param trainIterator The iterator containing the train departure to edit.
+   * @since 2.2.0
+   */
+  public void editTrainSubmenu(Iterator<TrainDeparture> trainIterator) {
+    int trainNumber = trainIterator.next().getTrainNumber();
+    this.message.printSelectedTrain(option.searchByTrainNumber(trainNumber));
+    this.message.printStatusBar(this.option.displayClock(),
+        this.option.numberOfTrainDepartures());
+    this.message.printEditTrainMenu();
+    switch (this.option.selectOption()) {
+      case Selection.SET_DEPARTURE_TIME:
+        trainIterator = this.option.setDepartureTime(trainNumber);
+        editTrainSubmenu(trainIterator);
+        break;
+      case Selection.SET_TRAIN_NUMBER:
+        trainIterator = option.setTrainNumber(trainNumber);
+        editTrainSubmenu(trainIterator);
+        break;
+      case Selection.SET_TRAIN_LINE:
+        trainIterator = this.option.setTrainLine(trainNumber);
+        editTrainSubmenu(trainIterator);
+        break;
+      case Selection.SET_DESTINATION:
+        trainIterator = this.option.setDestination(trainNumber);
+        editTrainSubmenu(trainIterator);
+        break;
+      case Selection.SET_DELAY:
+        trainIterator = this.option.setDelay(trainNumber);
+        editTrainSubmenu(trainIterator);
+        break;
+      case Selection.SET_TRACK_NUMBER:
+        trainIterator = this.option.assignTrack(trainNumber);
+        editTrainSubmenu(trainIterator);
+        break;
+      case Selection.SELECT_NEW_TRAIN:
+        message.printTrainInformationTable(this.option.getTrainRegister());
+        editTrainMenu();
+        break;
+      case Selection.RETURN_MAIN_MENU:
+        break;
+      default:
+        this.message.errorOption();
+        editTrainSubmenu(option.searchByTrainNumber(trainNumber));
     }
   }
 
@@ -124,12 +224,12 @@ public class Menu {
   public void addTrainMenu(){
     message.addTrainDepartureOption();
     if(option.askToContinue("continue adding a new train departure")) {
-      addTrainSubMenu();
+      addTrainSubmenu();
     }
   }
 
   /**
-   * Displays the menu for adding a new train departure to the user. The method prompts the user to
+   * Displays the submenu for adding a new train departure to the user. The method prompts the user to
    * enter the train number, the train line, the destination, the departure time and the delay. If
    * the train departure is successfully added, the method will prompt the user an option to assign
    * a track number to the train departure. If the train departure is not successfully added, the
@@ -137,7 +237,7 @@ public class Menu {
    *
    * @since 2.1.0
    */
-  public void addTrainSubMenu(){
+  public void addTrainSubmenu(){
     message.printStatusBar(option.displayClock(), option.numberOfTrainDepartures());
     message.printSeparator();
     int before = option.numberOfTrainDepartures();
@@ -146,13 +246,13 @@ public class Menu {
     if(before < after){
       message.printAddedTrain(option.searchByTrainNumber(trainNumber));
       if (option.askToContinue("assign the track number")){
-        option.assignTrack(option.searchByTrainNumber(trainNumber));
+        option.assignTrack(trainNumber);
       }
     } else {
-      message.invalidTrainDeparture();
+      message.errorTrainDeparture();
       message.printSeparator();
       if (option.askToContinue("try again?")){
-        addTrainSubMenu();
+        addTrainSubmenu();
       }
     }
   }
