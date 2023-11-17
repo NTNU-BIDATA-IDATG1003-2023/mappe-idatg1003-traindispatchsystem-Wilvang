@@ -10,17 +10,25 @@ import java.util.Iterator;
  * The class uses an object of class ColorPrint to print messages in different colors.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.2.0
- * @since 2.2.0
+ * @version 2.3.0
+ * @since 2.3.0
  */
 
 public class Print {
   private final ConsoleColor color;
   private final Object[] trainInformationHeader;
+  private static final String TABLE_FORMAT = "%-20s %-20s %-20s %-20s %-20s %-20s%n";
+  private static final String ASK_TO_CONTINUE = "Please enter 'y' for yes or 'n' for no ::";
+  private static final String CHECK_FORMAT = "The format provided was not accepted.";
+  private static final String SELECT_OPTION = " Please select an option: ";
+  private static final String RETURN = " Return to main menu";
+
   /**
-   * Creates object of class Print. The object contains an object of class ColorPrint.
+   * Creates object of class Print. The object contains an object of class ColorPrint. The train
+   * information header is used to print the information table. The header contains the different
+   * headers for the information table.
    *
-   * @since 1.9.0
+   * @since 2.3.0
    */
   public Print() {
     this.color = new ConsoleColor();
@@ -32,7 +40,7 @@ public class Print {
    * Prints a separator to the console. The separator is used to separate different sections of the
    * application.
    *
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public void printSeparator() {
     color.printCyan("-------------------------------------------------------");
@@ -50,20 +58,10 @@ public class Print {
   }
 
   /**
-   * Prints a specified message to the console. The message is printed in white.
-   *
-   * @param message The message to be printed.
-   * @since 1.9.0
-   */
-  public void print(String message) {
-    color.printWhite(message);
-  }
-
-  /**
    * Prints the initial message prompted to the user when the application is started. The message
    * contains information about the application and how to get started.
    *
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public void printWelcome() {
     printSeparator();
@@ -79,7 +77,7 @@ public class Print {
   /**
    * Prints the message prompted to the user when the application is closed.
    *
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public void printExit() {
     printSeparator();
@@ -90,11 +88,62 @@ public class Print {
   }
 
   /**
+   * Prints an information message explaining the UPDATE_CLOCK option.
+   *
+   * @since 1.6.2
+   */
+  public void updateClockOption() {
+    printSeparator();
+    color.printBlueBackground(
+        color.printWhiteBold(" Changing the system time of the application "));
+    color.printBlue("\nCAUTION: The train departures that is due to depart");
+    color.printBlue("before the new selected time, "
+        + color.printBlueBold("will be removed."));
+    printSeparator();
+  }
+
+  /**
+   * Prints an information message explaining the ADD_TRAIN option.
+   *
+   * @since 1.6.2
+   */
+  public void addTrainDepartureOption() {
+    printSeparator();
+    color.printBlueBackground(color.printWhiteBold(" Adding a new train departure "));
+    color.printBlue("\nThe mandatory information that is required to add a new ");
+    color.printBlue("train departure is the departure time, train number, ");
+    color.printBlue("destination and train line. The new train departure must ");
+    color.printBlue("have a unique train number. The track number is set to -1");
+    color.printBlue("to default. You will be prompted an option to change this ");
+    color.printBlue("later.");
+    color.printBlue("\nCATION: If the train number already exists or the train");
+    color.printBlue("already has departed, the new train departure "
+        + color.printBlueBold("will \nnot be added"));
+    printSeparator();
+  }
+
+  /**
+   * Prints an information message explaining the NEW_DAY option. The message is printed when the
+   * user wants to start a new day. The message explains that all the train departures that has
+   * departed will be removed from the train register.
+   *
+   * @since 2.3.0
+   */
+  public void newDayOption() {
+    printSeparator();
+    color.printBlueBackground(color.printWhiteBold(" Starting a new day "));
+    color.printBlue("\nCAUTION: When starting a new day, all the train departures");
+    color.printBlue("that has departed will be removed from the train register.");
+    color.printBlue("You will be prompted to enter the current time of the new day.");
+    printSeparator();
+  }
+
+  /**
    * Prints the current time as a digital clock. The time is printed in purple.
    *
    * @param time The current time.
    * @return The current time as a digital clock.
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public String clockMessage(LocalTime time) {
     return ConsoleColor.ANSI_PURPLE + "The time is: " + ConsoleColor.ANSI_PURPLE_BACKGROUND
@@ -120,7 +169,7 @@ public class Print {
    *
    * @param time           The current time.
    * @param numberOfTrains The number of train departures due today.
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public void printStatusBar(LocalTime time, int numberOfTrains) {
     printSeparator();
@@ -131,11 +180,11 @@ public class Print {
    * Prints the main menu. The main menu contains the different options that the user can choose
    * from.
    *
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public void printMainManu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
+    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " View information table");
     color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Add new train departure");
     color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Edit train departure");
@@ -151,14 +200,14 @@ public class Print {
    * Prints the search menu. The search menu contains the different options that the user can choose
    * from.
    *
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public void printSearchMenu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
+    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Search by train number");
     color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Search by destination");
-    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + " Return to main menu");
+    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
     printSeparator();
   }
 
@@ -170,9 +219,9 @@ public class Print {
    */
   public void printSelectTrainMenu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
+    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Select by train number");
-    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + " Return to main menu");
+    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
     printSeparator();
   }
 
@@ -184,7 +233,7 @@ public class Print {
    */
   public void printEditTrainMenu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
+    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Set departure time");
     color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Set train number");
     color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Set train line");
@@ -192,42 +241,7 @@ public class Print {
     color.printWhite("[5]" + ConsoleColor.ANSI_BLUE + " Set delay");
     color.printWhite("[6]" + ConsoleColor.ANSI_BLUE + " Set track number");
     color.printWhite("[7]" + ConsoleColor.ANSI_BLUE + " Select new train");
-    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + " Return to main menu");
-    printSeparator();
-  }
-
-  /**
-   * Prints an information message explaining the UPDATE_CLOCK option.
-   *
-   * @since 1.9.0
-   */
-  public void updateClockOption() {
-    printSeparator();
-    color.printBlueBackground(
-        color.printWhiteBold(" Changing the system time of the application "));
-    color.printBlue("\nCAUTION: The train departures that is due to depart");
-    color.printBlue("before the new selected time, "
-        + color.printBlueBold("will be removed."));
-    printSeparator();
-  }
-
-  /**
-   * Prints an information message explaining the ADD_TRAIN option.
-   *
-   * @since 1.9.0
-   */
-  public void addTrainDepartureOption() {
-    printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Adding a new train departure "));
-    color.printBlue("\nThe mandatory information that is required to add a new ");
-    color.printBlue("train departure is the departure time, train number, ");
-    color.printBlue("destination and train line. The new train departure must ");
-    color.printBlue("have a unique train number. The track number is set to -1");
-    color.printBlue("to default. You will be prompted an option to change this ");
-    color.printBlue("later.");
-    color.printBlue("\nCATION: If the train number already exists or the train");
-    color.printBlue("already has departed, the new train departure "
-        + color.printBlueBold("will \nnot be added"));
+    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
     printSeparator();
   }
 
@@ -235,31 +249,13 @@ public class Print {
    * Prints the information of all the train departures in the train iterator.
    *
    * @param trainIterator The train iterator containing the train departures.
-   * @since 1.9.0
+   * @since 2.3.0
    */
   public void printTrainDeparture(Iterator<TrainDeparture> trainIterator) {
     while (trainIterator.hasNext()) {
-      System.out.printf(
-          "%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.ANSI_WHITE),
+      System.out.printf(ConsoleColor.ANSI_WHITE + TABLE_FORMAT,
           trainDepartureInformation(trainIterator));
     }
-  }
-
-  /**
-   * Prints the information table of all the train departures in the train iterator.
-   *
-   * @param trainIterator The train iterator containing the train departures.
-   * @since 1.9.0
-   */
-  public void printTrainInformationTable(Iterator<TrainDeparture> trainIterator) {
-    printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Train Information Table "));
-    color.printBlue("");
-    System.out.printf("%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.BLUE_BOLD),
-        this.trainInformationHeader);
-    printLargeSeparator();
-    printTrainDeparture(trainIterator);
-    printLargeSeparator();
   }
 
   /**
@@ -269,19 +265,19 @@ public class Print {
    *
    * @param trainIterator The train iterator containing the train departures.
    * @return The information of the selected train departure.
-   * @since 2.3.0
+   * @since 2.2.1
    */
   public Object[] trainDepartureInformation(Iterator<TrainDeparture> trainIterator) {
     TrainDeparture train = trainIterator.next();
     Object[] trainInformation = {train.getRealDepartureTime(), train.getTrainLine(),
-        + train.getTrainNumber(), train.getDestination(), train.getMinutesDelay() + " minutes",
+        + train.getTrainNumber(), train.getDestination(), train.getDelay(),
         train.getTrackNumber()};
     if (train.getMinutesDelay() > 0 && train.getTrackNumber() == -1) {
-      trainInformation[4] =  train.getMinutesDelay() + " minutes";
+      trainInformation[4] =  train.getDelay();
       trainInformation[5] = "";
     } else if (train.getMinutesDelay() > 0 && train.getTrackNumber() != -1) {
       trainInformation[0] = train.getRealDepartureTime();
-      trainInformation[4] = train.getMinutesDelay() + " minutes";
+      trainInformation[4] = train.getDelay();
     } else if (train.getMinutesDelay() == 0 && train.getTrackNumber() == -1) {
       trainInformation[4] = "";
       trainInformation[5] = "";
@@ -292,48 +288,33 @@ public class Print {
   }
 
   /**
-   * Prints an error message explaining that the user chose an invalid option.
+   * Prints the information table of all the train departures in the train iterator.
    *
-   * @since 1.9.0
+   * @param trainIterator The train iterator containing the train departures.
+   * @since 1.6.2
    */
-  public void errorOption() {
-    System.err.println("You chose an invalid option.");
-    System.err.println("Please try again with one of the listed options below.");
-  }
-
-  /**
-   * Prints an error message explaining that the train departure failed to be created.
-   *
-   * @since 1.9.0
-   */
-  public void errorTrainDeparture() {
-    System.err.println("The train departure you are trying to add is invalid.");
-    System.err.println("Please make sure that the train number is unique and ");
-    System.err.println("that the departure time is not before the current time.");
-  }
-
-  /**
-   * Prints an error message explaining that the train number is already existing in the train
-   * register.
-   *
-   * @since 2.2.0
-   */
-  public void errorEmptyIterator() {
-    System.err.println("The train selected does not exist");
-    System.err.println("Please select a train from the train information table.");
+  public void printTrainInformationTable(Iterator<TrainDeparture> trainIterator) {
+    printSeparator();
+    color.printBlueBackground(color.printWhiteBold(" Train Information Table "));
+    color.printBlue("");
+    System.out.printf(ConsoleColor.BLUE_BOLD + TABLE_FORMAT,
+        this.trainInformationHeader);
+    printLargeSeparator();
+    printTrainDeparture(trainIterator);
+    printLargeSeparator();
   }
 
   /**
    * Prints the newly added train departure.
    *
    * @param trainIterator The train iterator containing the train departures.
-   * @since 1.9.0
+   * @since 1.6.2
    */
   public void printAddedTrain(Iterator<TrainDeparture> trainIterator) {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" New Train Departure "));
     color.printBlue("");
-    System.out.printf("%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.BLUE_BOLD),
+    System.out.printf(ConsoleColor.BLUE_BOLD + TABLE_FORMAT,
         this.trainInformationHeader);
     printLargeSeparator();
     printTrainDeparture(trainIterator);
@@ -351,15 +332,233 @@ public class Print {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Selected Train Departure "));
     color.printBlue("");
-    System.out.printf("%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.BLUE_BOLD),
+    System.out.printf(ConsoleColor.BLUE_BOLD + TABLE_FORMAT,
         this.trainInformationHeader);
     printLargeSeparator();
     printTrainDeparture(trainIterator);
     printLargeSeparator();
   }
 
-  public void promtSelectOption(){
+  /**
+   * Prompts the user to enter the number associated with the option they want to select.
+   *
+   * @since 2.3.0
+   */
+  public void inputSelectOption() {
     color.printCyan("Please enter the number associated with the option");
     color.printCyan("you want to select ::");
+  }
+
+  /**
+   * Prompts the user to enter the time in the format (HH:mm).
+   *
+   * @since 2.3.0
+   */
+  public void inputTime() {
+    color.printCyan("Please enter the time in the format (HH:mm)");
+    color.printCyan("or enter 'q' to set the time to 00:00 ::");
+  }
+
+  /**
+   * Prompts the user to enter the departure time in the format (HH:mm).
+   *
+   * @since 2.3.0
+   */
+  public void inputDepartureTime() {
+    color.printCyan("Please enter the departure time in the format (HH:mm)");
+    color.printCyan("Make sure to select a time after the system clock ::");
+  }
+
+  /**
+   * Prompts the user to enter the train number associated with the departure.
+   *
+   * @since 2.3.0
+   */
+  public void inputTrainNumber() {
+    color.printCyan("Please enter the train number associated with the departure");
+    color.printCyan("The train number must be unique and cannot be negative ::");
+  }
+
+  /**
+   * Prompts the user to enter the train line for the train departure.
+   *
+   * @since 2.3.0
+   */
+  public void inputTrainLine() {
+    color.printCyan("Please enter the train line for this departure");
+    color.printCyan("A train line could be (RE12, L2, F3, etc.) ::");
+  }
+
+  /**
+   * Prompts the user to enter the destination for the train departure.
+   *
+   * @since 2.3.0
+   */
+  public void inputDestination() {
+    color.printCyan("Please enter the destination for this departure");
+    color.printCyan("The destination must be a sequence of characters ::");
+  }
+
+  /**
+   * Prompts the user to enter the delay in minutes.
+   *
+   * @since 2.3.0
+   */
+  public void inputDelay() {
+    color.printCyan("Please enter the delay in minutes");
+    color.printCyan("The delay must be a positive integer ::");
+  }
+
+  /**
+   * Prompts the user to enter the track number for the train departure.
+   *
+   * @since 2.3.0
+   */
+  public void inputTrackNumber() {
+    color.printCyan("Please enter the track number for this departure");
+    color.printCyan("The track number must be a positive integer ::");
+  }
+
+  /**
+   * Prompts the user to enter the train number they want to search for.
+   *
+   * @since 2.3.0
+   */
+  public void inputSearchTrainNumber() {
+    color.printCyan("Please enter the train number you want to search for");
+    color.printCyan("The train number must be a positive integer ::");
+  }
+
+  /**
+   * Prompts the user to enter the destination they want to search for.
+   *
+   * @since 2.3.0
+   */
+  public void inputSearchDestination() {
+    color.printCyan("Please enter the destination you want to search for");
+    color.printCyan("The destination must be a sequence of characters ::");
+  }
+
+  /**
+   * Asks the user if they want to add a new train departure.
+   *
+   * @since 2.3.0
+   */
+  public void askTrainDeparture() {
+    color.printCyan("Do you want to add a new train departure?");
+    color.printCyan(ASK_TO_CONTINUE);
+  }
+
+  /**
+   * Asks the user if they want to set a track number for the train departure.
+   *
+   * @since 2.3.0
+   */
+  public void askTrackNumber() {
+    color.printCyan("Do you want to assign a track number?");
+    color.printCyan(ASK_TO_CONTINUE);
+  }
+
+  /**
+   * Asks the user if they want to try again.
+   *
+   * @since 2.3.0
+   */
+  public void askTryAgain() {
+    color.printCyan("Do you want to try again?");
+    color.printCyan(ASK_TO_CONTINUE);
+  }
+
+  /**
+   * Asks the user if they want to continue.
+   *
+   * @since 2.3.0
+   */
+  public void askIfSure() {
+    color.printCyan("Are you sure you want to continue?");
+    color.printCyan(ASK_TO_CONTINUE);
+  }
+
+  /**
+   * Prints an error message explaining that the user chose an invalid option.
+   *
+   * @since 1.6.2
+   */
+  public void errorOption() {
+    System.err.println("You chose an invalid option.");
+    System.err.println("Please try again with one of the listed options below.");
+  }
+
+  /**
+   * Prints an error message explaining that the train departure failed to be created.
+   *
+   * @since 1.6.2
+   */
+  public void errorCreateTrain() {
+    System.err.println("The train departure you are trying to add is invalid.");
+    System.err.println("Please make sure that the train number is unique and ");
+    System.err.println("that the departure time is not before the current time.");
+  }
+
+  /**
+   * Prints an error message explaining that the train number is already existing in the train
+   * register.
+   *
+   * @since 2.2.0
+   */
+  public void errorEmptyIterator() {
+    System.err.println("The train selected does not exist");
+    System.err.println("Please select a train from the train information table.");
+  }
+
+  /**
+   * Prints an error message explaining that the train number is already existing in the train
+   * register.
+   *
+   * @since 2.3.0
+   */
+  public void errorTrainNumberExists() {
+    System.err.println("The train number you are trying to add already exists.");
+    System.err.println("Please make sure that the train number is unique.");
+  }
+
+  /**
+   * Prints an error message explaining that the time format is incorrect.
+   *
+   * @since 2.3.0
+   */
+  public void errorTimeFormat() {
+    System.err.println(CHECK_FORMAT);
+    System.err.println("Please make sure to use the 24-hour clock format (HH:mm).");
+  }
+
+  /**
+   * Prints an error message explaining that the string must be a sequence of characters.
+   *
+   * @since 2.3.0
+   */
+  public void errorStringFormat() {
+    System.err.println(CHECK_FORMAT);
+    System.err.println("Please make sure to enter a sequence of characters.");
+  }
+
+  /**
+   * Prints an error message explaining that the integer format is incorrect.
+   *
+   * @since 2.3.0
+   */
+  public void errorIntegerFormat() {
+    System.err.println(CHECK_FORMAT);
+    System.err.println("Please make sure to enter a whole number.");
+  }
+
+  /**
+   * Prints an error message explaining that the two valid options are 'y' for yes or 'n' for no.
+   *
+   * @since 2.3.0
+   */
+  public void errorBooleanFormat() {
+    System.err.println(CHECK_FORMAT);
+    System.err.println("Please make sure to enter 'y' for yes or 'n' for no.");
   }
 }

@@ -15,12 +15,11 @@ import java.util.Iterator;
  * The class uses an object of class Print to print messages to the console.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.2.1
+ * @version 2.3.0
  * @since 2.2.1
  */
 
 public class Option {
-
   private final InputValidator handler;
   private final TrainStation station;
   private final Print message;
@@ -44,7 +43,8 @@ public class Option {
    * @since 2.0.0
    */
   public void updateClock() {
-    String time = this.handler.validateTime();
+    message.inputTime();
+    String time = this.handler.validateTimeOption();
     if (!time.equals("q")) {
       this.station.setStationClock(time);
     }
@@ -78,7 +78,7 @@ public class Option {
    * @since 2.0.0
    */
   public int selectOption() {
-    message.promtSelectOption();
+    message.inputSelectOption();
     return this.handler.inputInteger();
   }
 
@@ -93,12 +93,14 @@ public class Option {
    * @since 2.0.0
    */
   public int addTrainDeparture() {
-    String departureTime = handler.validateTime("the departure time");
-    int trainNumber = handler.inputInteger("train number associated with the departure"
-        + "\nThe train number must be a positive whole number.");
-    String trainLine = handler.inputString("train line for this train departure"
-        + "\n(e.g. L2, RE11, F3, etc.)");
-    String destination = handler.inputString("train's final destination");
+    message.inputDepartureTime();
+    String departureTime = handler.validateTime();
+    message.inputTrainNumber();
+    int trainNumber = handler.inputInteger();
+    message.inputTrainLine();
+    String trainLine = handler.inputString();
+    message.inputDestination();
+    String destination = handler.inputString();
     this.station.addTrainDeparture(departureTime, trainNumber, trainLine, destination);
     return trainNumber;
   }
@@ -113,7 +115,8 @@ public class Option {
    * @since 2.0.0
    */
   public Iterator<TrainDeparture> searchByTrainNumber() {
-    int trainNumber = handler.inputInteger("train number");
+    message.inputSearchTrainNumber();
+    int trainNumber = handler.inputInteger();
     return this.station.searchByTrainNumber(trainNumber);
   }
 
@@ -127,7 +130,21 @@ public class Option {
    * @since 2.1.0
    */
   public Iterator<TrainDeparture> searchByTrainNumber(int trainNumber) {
+    message.inputSearchTrainNumber();
     return this.station.searchByTrainNumber(trainNumber);
+  }
+
+  /**
+   * Searches for all train departures with the specified destination The method prompts the
+   * user to enter the destination of the train departure. The method will return an iterator
+   * containing all train departures with the specified destination.
+   *
+   * @return An iterator containing all train departures with the specified destination.
+   * @since 2.3.0
+   */
+  public Iterator<TrainDeparture> searchByDestination() {
+    message.inputSearchDestination();
+    return this.station.searchByDestination(handler.inputString());
   }
 
   /**
@@ -136,12 +153,11 @@ public class Option {
    * <code>false</code>. The method will continue to prompt the user until the user enters the
    * correct format.
    *
-   * @param typeOfInput The type of input that the user is prompted to enter.
    * @return <code>true</code> if the user enters 'y', <code>false</code> if the user enters 'n'.
    * @since 2.1.0
    */
-  public boolean askToContinue(String typeOfInput) {
-    return handler.validateBoolean(typeOfInput);
+  public boolean askToContinue() {
+    return handler.validateBoolean();
   }
 
   /**
@@ -151,10 +167,14 @@ public class Option {
    * @since 2.1.0
    */
   public void initTrainDepartures() {
-    this.station.addTrainDeparture("12:43", 601, "F2", "Bergen");
-    this.station.addTrainDeparture("13:43", 63, "RE12", "Skien");
-    this.station.addTrainDeparture("12:13", 31, "L1", "Skøyen");
-    this.station.addTrainDeparture("14:43", 201, "F3", "Trondheim");
+    this.station.addTrainDeparture("12:43", 601,
+        "F2", "Bergen");
+    this.station.addTrainDeparture("12:45", 63,
+        "RE12", "Gjøvik");
+    this.station.addTrainDeparture("14:13", 31,
+        "L1", "Kjelsås");
+    this.station.addTrainDeparture("14:43", 201,
+        "F3", "Trondheim");
     this.station.setNewDelay(201, 10);
     this.station.setNewTrackNumber(201, 2);
     this.station.setNewDelay(63, 10);
@@ -181,8 +201,9 @@ public class Option {
    * @since 2.2.0
    */
   public Iterator<TrainDeparture> setDepartureTime(int trainNumber) {
+    message.inputDepartureTime();
     if (searchByTrainNumber(trainNumber).hasNext()) {
-      station.setNewDepartureTime(trainNumber, handler.validateTime("the departure time"));
+      station.setNewDepartureTime(trainNumber, handler.validateTime());
     }
     return searchByTrainNumber(trainNumber);
   }
@@ -197,13 +218,14 @@ public class Option {
    * @since 2.2.1
    */
   public Iterator<TrainDeparture> setTrainNumber(int trainNumber) {
-    int newTrainNumber = handler.inputInteger("the new train number");
+    message.inputTrainNumber();
+    int newTrainNumber = handler.inputInteger();
     if (searchByTrainNumber(trainNumber).hasNext() && station.isTrainNumberUnique(newTrainNumber)
         && newTrainNumber > 0) {
       station.setNewTrainNumber(trainNumber, newTrainNumber);
     } else {
       newTrainNumber = trainNumber;
-      // TODO: 2021-10-06 Add error message.
+      message.errorTrainNumberExists();
     }
     return searchByTrainNumber(newTrainNumber);
   }
@@ -218,8 +240,9 @@ public class Option {
    * @since 2.2.0
    */
   public Iterator<TrainDeparture> setTrainLine(int trainNumber) {
+    message.inputTrainLine();
     if (searchByTrainNumber(trainNumber).hasNext()) {
-      station.setNewTrainLine(trainNumber, handler.inputString("the train line"));
+      station.setNewTrainLine(trainNumber, handler.inputString());
     }
     return searchByTrainNumber(trainNumber);
   }
@@ -234,8 +257,9 @@ public class Option {
    * @since 2.2.0
    */
   public Iterator<TrainDeparture> setDestination(int trainNumber) {
+    message.inputDestination();
     if (searchByTrainNumber(trainNumber).hasNext()) {
-      station.setNewDestination(trainNumber, handler.inputString("the destination"));
+      station.setNewDestination(trainNumber, handler.inputString());
     }
     return searchByTrainNumber(trainNumber);
   }
@@ -250,8 +274,9 @@ public class Option {
    * @since 2.2.0
    */
   public Iterator<TrainDeparture> setDelay(int trainNumber) {
+    message.inputDelay();
     if (searchByTrainNumber(trainNumber).hasNext()) {
-      station.setNewDelay(trainNumber, handler.inputInteger("the delay"));
+      station.setNewDelay(trainNumber, handler.inputInteger());
     }
     return searchByTrainNumber(trainNumber);
   }
@@ -265,11 +290,11 @@ public class Option {
    * @return The train departure with the specified train number.
    * @since 2.2.0
    */
-  public Iterator<TrainDeparture> assignTrack(int trainNumber) {
+  public Iterator<TrainDeparture> setTrackNumber(int trainNumber) {
+    message.inputTrackNumber();
     if (searchByTrainNumber(trainNumber).hasNext()) {
       station.setNewTrackNumber(trainNumber,
-          handler.inputInteger("track number. The track number must "
-              + "\nbe a positive whole number up to 100"));
+          handler.inputInteger());
     }
     return searchByTrainNumber(trainNumber);
   }

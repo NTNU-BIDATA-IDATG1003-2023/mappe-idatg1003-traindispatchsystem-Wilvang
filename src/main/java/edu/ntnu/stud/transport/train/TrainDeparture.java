@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
  * in proportion to the delay.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.2.0
+ * @version 2.3.0
  * @since 2.2.0
  */
 
@@ -55,8 +55,8 @@ public class TrainDeparture {
    * @return The current delay, displayed as a digital clock.
    * @since 1.2.0
    */
-  public LocalTime getDelay() {
-    return this.delay;
+  public String getDelay() {
+    return this.delay.getMinute() + this.delay.getHour() * 60 + " min";
   }
 
   /**

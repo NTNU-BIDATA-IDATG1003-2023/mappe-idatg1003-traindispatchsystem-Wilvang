@@ -9,8 +9,8 @@ import java.util.Iterator;
  * the application and to display the main menu.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.3.0
+ * @since 2.3.0
  */
 
 public class Menu {
@@ -69,26 +69,28 @@ public class Menu {
   public void mainMenu(int select) {
     switch (select) {
       case Selection.INFORMATION_TABLE:
-        message.printTrainInformationTable(option.getTrainRegister());
+        informationTableMenu();
         break;
       case Selection.ADD_TRAIN:
         addTrainMenu();
         break;
       case Selection.EDIT_TRAIN:
-        message.printTrainInformationTable(option.getTrainRegister());
         editTrainMenu();
         break;
       case Selection.ASSIGN_TRACK:
         assignTrackMenu();
         break;
       case Selection.ADD_DELAY:
+        addDelayMenu();
         break;
       case Selection.SEARCH_TRAIN:
         searchMenu();
         break;
       case Selection.UPDATE_CLOCK:
-        message.updateClockOption();
-        option.updateClock();
+        updateClockMenu();
+        break;
+      case Selection.NEW_DAY:
+        newDayMenu();
         break;
       case Selection.EXIT:
         message.printExit();
@@ -110,8 +112,18 @@ public class Menu {
     this.message.printSearchMenu();
     switch (this.option.selectOption()) {
       case Selection.SEARCH_TRAIN_NUMBER:
+        Iterator<TrainDeparture> trainIterator = option.searchByTrainNumber();
+        message.printSelectedTrain(trainIterator);
+        if (option.askToContinue()) {
+          editTrainSubmenu(trainIterator);
+        }
         break;
       case Selection.SEARCH_DESTINATION:
+        Iterator<TrainDeparture> trainDestinationIterator = option.searchByDestination();
+        message.printSelectedTrain(trainDestinationIterator);
+        if (option.askToContinue()) {
+          editTrainSubmenu(trainDestinationIterator);
+        }
         break;
       case Selection.RETURN_MAIN_MENU:
         break;
@@ -129,20 +141,8 @@ public class Menu {
    * @since 2.2.0
    */
   public void assignTrackMenu() {
-    this.message.printStatusBar(this.option.displayClock(),
-        this.option.numberOfTrainDepartures());
-    this.message.printSelectTrainMenu();
-    switch (this.option.selectOption()) {
-      case Selection.SEARCH_TRAIN_NUMBER:
-        message.printTrainInformationTable(option.getTrainRegister());
-        option.assignTrack(option.searchByTrainNumber().next().getTrainNumber());
-        break;
-      case Selection.RETURN_MAIN_MENU:
-        break;
-      default:
-        this.message.errorOption();
-        assignTrackMenu();
-    }
+    message.printTrainInformationTable(option.getTrainRegister());
+    option.setTrackNumber(option.searchByTrainNumber().next().getTrainNumber());
   }
 
   /**
@@ -154,12 +154,16 @@ public class Menu {
    * @since 2.2.0
    */
   public void editTrainMenu() {
+    message.printTrainInformationTable(option.getTrainRegister());
     Iterator<TrainDeparture> trainIterator = option.searchByTrainNumber();
     if (trainIterator.hasNext()) {
       editTrainSubmenu(trainIterator);
     } else {
       message.errorEmptyIterator();
-      editTrainMenu();
+      message.askTrainDeparture();
+      if (option.askToContinue()) {
+        addTrainMenu();
+      }
     }
   }
 
@@ -199,7 +203,7 @@ public class Menu {
         editTrainSubmenu(trainIterator);
         break;
       case Selection.SET_TRACK_NUMBER:
-        trainIterator = this.option.assignTrack(trainNumber);
+        trainIterator = this.option.setTrackNumber(trainNumber);
         editTrainSubmenu(trainIterator);
         break;
       case Selection.SELECT_NEW_TRAIN:
@@ -223,7 +227,8 @@ public class Menu {
    */
   public void addTrainMenu() {
     message.addTrainDepartureOption();
-    if (option.askToContinue("continue adding a new train departure")) {
+    message.askTrainDeparture();
+    if (option.askToContinue()) {
       addTrainSubmenu();
     }
   }
@@ -245,15 +250,74 @@ public class Menu {
     int after = option.numberOfTrainDepartures();
     if (before < after) {
       message.printAddedTrain(option.searchByTrainNumber(trainNumber));
-      if (option.askToContinue("assign the track number")) {
-        option.assignTrack(trainNumber);
+      message.askTrackNumber();
+      if (option.askToContinue()) {
+        option.setTrackNumber(trainNumber);
       }
     } else {
-      message.errorTrainDeparture();
+      message.errorCreateTrain();
       message.printSeparator();
-      if (option.askToContinue("try again?")) {
+      message.askTryAgain();
+      if (option.askToContinue()) {
         addTrainSubmenu();
       }
+    }
+  }
+
+  /**
+   * Displays the information table to the user. If the train register is empty, the method will
+   * display an error message and prompt the user if they want to add a new train departure.
+   *
+   * @since 2.3.0
+   */
+  public void informationTableMenu() {
+    if (option.getTrainRegister().hasNext()) {
+      message.printTrainInformationTable(option.getTrainRegister());
+    } else {
+      message.errorEmptyIterator();
+      if (option.askToContinue()) {
+        addTrainMenu();
+      }
+    }
+  }
+
+  /**
+   * Displays the menu for adding a delay to a specified train departure. The method prompts the
+   * user to enter the train number of the train departure to add a delay to. The specified delay
+   * will be added to the train departure.
+   *
+   * @since 2.3.0
+   */
+  public void addDelayMenu() {
+    message.printTrainInformationTable(option.getTrainRegister());
+    option.setDelay(option.searchByTrainNumber().next().getTrainNumber());
+  }
+
+  /**
+   * Displays the menu for updating the clock to the user. The method prompts the user to enter the
+   * new time. The train departures that has departed will be removed from the train register.
+   *
+   * @since 2.3.0
+   */
+  public void updateClockMenu() {
+    message.updateClockOption();
+    option.updateClock();
+  }
+
+  /**
+   * Displays the menu for starting a new day to the user. The method prompts the user to enter the
+   * time for the new day. The train departures that has departed will be removed from the train
+   * register. The user has to confirm that they want to start a new day before the method will
+   * continue.
+   *
+   * @since 2.3.0
+   */
+  public void newDayMenu() {
+    message.newDayOption();
+    message.askIfSure();
+    if (option.askToContinue()) {
+      init();
+      start();
     }
   }
 }

@@ -6,7 +6,7 @@ package edu.ntnu.stud.ui;
  * constants for the different options in the different menus in the application.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.2.0
+ * @version 2.3.0
  * @since 2.1.1
  */
 
@@ -20,6 +20,7 @@ public class Selection {
   public static final int ADD_DELAY = 5;
   public static final int SEARCH_TRAIN = 6;
   public static final int UPDATE_CLOCK = 7;
+  public static final int NEW_DAY = 8;
   public static final int EXIT = 9;
   // search menu options
   public static final int SEARCH_TRAIN_NUMBER = 1;
