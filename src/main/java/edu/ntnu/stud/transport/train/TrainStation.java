@@ -20,13 +20,12 @@ import java.util.stream.Collectors;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.2.0
- * @since 2.2.0
+ * @version 2.2.1
+ * @since 2.2.1
  */
 
 public final class TrainStation {
   private final HashMap<Integer, TrainDeparture> trainRegister;
-  private final ArrayList<Integer> trainNumberList;
   private LocalTime stationClock;
 
   /**
@@ -37,7 +36,6 @@ public final class TrainStation {
    */
   public TrainStation(){
     this.trainRegister = new HashMap<>();
-    this.trainNumberList = new ArrayList<>();
     this.setStationClock("00:00");
   }
 
@@ -108,13 +106,12 @@ public final class TrainStation {
    *
    * @param trainNumber The train number to be set.
    * @return The specified train number.
-   * @since 1.6.0
+   * @since 2.2.1
    */
   public int makeTrainNumber(int trainNumber){
     int number = -1;
-    if (!this.trainNumberList.contains(trainNumber)){
+    if (!this.trainRegister.containsKey(trainNumber)){
       number = trainNumber;
-      this.trainNumberList.add(trainNumber);
     }
     return number;
   }
@@ -196,16 +193,16 @@ public final class TrainStation {
 
   /**
    * Set a new train number for the train departure associated with specified train number. The
-   * train number is unique for each train departure. If the train number already exists in the
+   * train number is unique for each train departure. If the new train number already exists in the
    * train register, the train number will not be changed.
    *
    * @param trainNumber The train number of the train departure.
    * @param newTrainNumber The new train number of the train departure.
-   * @since 2.2.0
+   * @since 2.2.1
    */
   public void setNewTrainNumber(int trainNumber, int newTrainNumber){
     Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
-    if (trainIterator.hasNext()){
+    if (trainIterator.hasNext() && !trainRegister.containsKey(newTrainNumber)){
       trainIterator.next().setTrainNumber(newTrainNumber);
     }
   }

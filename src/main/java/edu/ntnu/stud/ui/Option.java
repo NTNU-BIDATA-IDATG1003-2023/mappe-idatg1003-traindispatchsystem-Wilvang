@@ -16,8 +16,8 @@ import java.util.Iterator;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.2.1
+ * @since 2.2.1
  */
 
 public class Option {
@@ -188,12 +188,14 @@ public class Option {
    *
    * @param trainNumber The train number of the train departure.
    * @return The train departure with the specified train number.
-   * @since 2.2.0
+   * @since 2.2.1
    */
   public Iterator<TrainDeparture> setTrainNumber(int trainNumber){
     int newTrainNumber = handler.inputInteger("the new train number");
-    if (searchByTrainNumber(trainNumber).hasNext()) {
+    if (searchByTrainNumber(trainNumber).hasNext() && station.isTrainNumberUnique(newTrainNumber)) {
       station.setNewTrainNumber(trainNumber, newTrainNumber);
+    } else {
+      newTrainNumber = trainNumber;
     }
     return searchByTrainNumber(newTrainNumber);
   }
