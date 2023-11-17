@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 2.2.1
- * @since 2.2.1
+ * @version 2.2.2
+ * @since 2.2.2
  */
 
 public final class TrainStation {
@@ -36,7 +36,7 @@ public final class TrainStation {
    */
   public TrainStation(){
     this.trainRegister = new HashMap<>();
-    this.setStationClock("00:00");
+    this.stationClock = LocalTime.parse("00:00");
   }
 
   /**
@@ -85,18 +85,17 @@ public final class TrainStation {
 
   /**
    * Set the time displayed on the station clock. The time is an object form the LocalTime class
-   * represented as a digital clock. If the time is not in the correct format, the time will be set
-   * to 00:00.
+   * represented as a digital clock. If the time is before the current time displayed on the station
+   * clock, the time will not be changed.
    *
    * @param time The time displayed on the station clock.
-   * @since 1.4.0
+   * @since 2.2.2
    */
   public void setStationClock(String time) {
-    if (time.matches("\\d{2}:\\d{2}")){
+    if (LocalTime.parse(time).isAfter(this.stationClock)){
       this.stationClock = LocalTime.parse(time);
-    } else {
-      this.stationClock = LocalTime.of(0, 0);
     }
+    removeDepartedTrains();
   }
 
   /**
@@ -266,5 +265,17 @@ public final class TrainStation {
     if (trainIterator.hasNext()){
       trainIterator.next().setDelay(newDelay);
     }
+  }
+
+  /**
+   * Removes all train departures that already departed in the train station, from the train
+   * register.
+   *
+   * @since 2.2.2
+   */
+  public void removeDepartedTrains(){
+    this.trainRegister.values().stream().filter(train -> train.getDepartureTime()
+            .isBefore(this.stationClock)).collect(Collectors.toCollection(ArrayList::new))
+        .forEach(train -> this.trainRegister.remove(train.getTrainNumber()));
   }
 }

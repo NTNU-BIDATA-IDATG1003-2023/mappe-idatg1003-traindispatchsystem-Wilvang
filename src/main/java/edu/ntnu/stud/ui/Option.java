@@ -43,7 +43,7 @@ public class Option {
    */
   public void updateClock() {
     String time = this.handler.validateTime();
-    if (!time.equals("q")) {
+    if (!time.equals("q")){
       this.station.setStationClock(time);
     }
   }
@@ -196,6 +196,7 @@ public class Option {
       station.setNewTrainNumber(trainNumber, newTrainNumber);
     } else {
       newTrainNumber = trainNumber;
+      // TODO: 2021-10-06 Add error message.
     }
     return searchByTrainNumber(newTrainNumber);
   }
