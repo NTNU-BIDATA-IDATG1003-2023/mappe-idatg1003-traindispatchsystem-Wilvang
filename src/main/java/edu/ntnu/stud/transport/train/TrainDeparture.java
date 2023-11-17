@@ -11,13 +11,13 @@ import java.time.format.DateTimeFormatter;
  * departure time and delay is an object form the LocalTime class. The departure time is incremented
  * in proportion to the delay.
  *
- *
  * @author Johan Fredrik Wilvang
  * @version 2.2.0
  * @since 2.2.0
  */
 
 public class TrainDeparture {
+
   // required fields
   private LocalTime departureTime;
   private int trainNumber;
@@ -34,12 +34,13 @@ public class TrainDeparture {
    * The delay and track number is initially set to 00:00 and -1.
    *
    * @param departureTime The specified time of the departure.
-   * @param trainNumber The specified train number.
-   * @param trainLine The specified train line.
-   * @param destination The specified destination.
+   * @param trainNumber   The specified train number.
+   * @param trainLine     The specified train line.
+   * @param destination   The specified destination.
    * @since 1.4.0
    */
-  public TrainDeparture(String departureTime, int trainNumber, String trainLine, String destination) {
+  public TrainDeparture(String departureTime, int trainNumber, String trainLine,
+      String destination) {
     this.setDepartureTime(departureTime);
     this.setTrainNumber(trainNumber);
     this.setTrainLine(trainLine);
@@ -64,7 +65,7 @@ public class TrainDeparture {
    * @return The current delay in minutes.
    * @since 2.2.0
    */
-  public int getMinutesDelay(){
+  public int getMinutesDelay() {
     return this.delay.getMinute() + this.delay.getHour() * 60;
   }
 
@@ -85,7 +86,7 @@ public class TrainDeparture {
    * @return The real departure time as a digital clock.
    * @since 2.1.0
    */
-  public LocalTime getRealDepartureTime(){
+  public LocalTime getRealDepartureTime() {
     return this.departureTime.plusMinutes(getMinutesDelay());
   }
 
@@ -130,8 +131,8 @@ public class TrainDeparture {
   }
 
   /**
-   * Increment the train's delay with a specified number of minutes delayed. If the specified
-   * number of minutes delayed is less than zero, the delay is set to 00:00.
+   * Increment the train's delay with a specified number of minutes delayed. If the specified number
+   * of minutes delayed is less than zero, the delay is set to 00:00.
    *
    * @param minutesDelay The specified number of minutes delayed.
    * @since 2.1.1
@@ -144,12 +145,12 @@ public class TrainDeparture {
   }
 
   /**
-   * Set the train's departure time to the specified time of the departure. If the specified time
-   * is an invalid 24-hour clock format (HH:mm), the departure time is set to 00:00.
+   * Set the train's departure time to the specified time of the departure. If the specified time is
+   * an invalid 24-hour clock format (HH:mm), the departure time is set to 00:00.
    *
    * @param departureTime The specified time of the departure.
    * @since 2.1.1
-  */
+   */
   public void setDepartureTime(String departureTime) {
     if (departureTime.matches("\\d{2}:\\d{2}")
         && Integer.parseInt(departureTime.substring(0, 2)) < 24
@@ -174,10 +175,11 @@ public class TrainDeparture {
       this.trainLine = "INVALID";
     }
   }
+
   /**
-   * Set the train's destination to a new specified destination. The destination is formatted so that
-   * the first letter is capitalized and the rest of the letters are lower case. If the specified
-   * destination is equal to <code>null</code>, the destination is set to "INVALID".
+   * Set the train's destination to a new specified destination. The destination is formatted so
+   * that the first letter is capitalized and the rest of the letters are lower case. If the
+   * specified destination is equal to <code>null</code>, the destination is set to "INVALID".
    *
    * @param destination The new specified destination.
    * @since 2.1.1
@@ -192,15 +194,15 @@ public class TrainDeparture {
   }
 
   /**
-   * Set the train number to a new specified train number. The train number's area of validity is
-   * a positive number up to 4 digits. If the specified train number is outside the area of
-   * validity, the train number is set to -1.
+   * Set the train number to a new specified train number. The train number's area of validity is a
+   * positive number up to 4 digits. If the specified train number is outside the area of validity,
+   * the train number is set to -1.
    *
    * @param trainNumber The new specified train number.
    * @since 2.1.1
    */
-  public void setTrainNumber(int trainNumber){
-    if (trainNumber > 0 && trainNumber < 10000){
+  public void setTrainNumber(int trainNumber) {
+    if (trainNumber > 0 && trainNumber < 10000) {
       this.trainNumber = trainNumber;
     } else {
       this.trainNumber = -1;
@@ -208,8 +210,8 @@ public class TrainDeparture {
   }
 
   /**
-   * Set the track number to a new specified track number. The track number's area of validity is
-   * a positive number up to 100. If the specified track number is outside the area of validity, the
+   * Set the track number to a new specified track number. The track number's area of validity is a
+   * positive number up to 100. If the specified track number is outside the area of validity, the
    * track number is set to zero.
    *
    * @param trackNumber The new specified track number.

@@ -7,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TrainDepartureTest {
-private TrainDeparture trainDepartureTest;
+
+  private TrainDeparture trainDepartureTest;
+
   @BeforeEach
   void setUp() {
     trainDepartureTest = new TrainDeparture("12:00", 13,

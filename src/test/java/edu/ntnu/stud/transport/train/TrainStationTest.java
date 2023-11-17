@@ -8,7 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TrainStationTest {
-private TrainStation trainStationTest;
+
+  private TrainStation trainStationTest;
+
   @BeforeEach
   void setUp() {
     trainStationTest = new TrainStation();
@@ -34,7 +36,7 @@ private TrainStation trainStationTest;
 
   @Test
   void setNewTrainNumberPositiveTest() {
-    trainStationTest.setNewTrainNumber(13,40);
+    trainStationTest.setNewTrainNumber(13, 40);
     assertEquals(40, trainStationTest.searchByTrainNumber(40).next().getTrainNumber(),
         "The train number was not changed");
   }

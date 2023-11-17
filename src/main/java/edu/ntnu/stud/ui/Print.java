@@ -4,12 +4,10 @@ import edu.ntnu.stud.transport.train.TrainDeparture;
 import java.time.LocalTime;
 import java.util.Iterator;
 
-
 /**
  * The Print class is used to print messages to the console. The class contains methods to print
  * different types of messages, such as information messages, error messages and status messages.
  * The class uses an object of class ColorPrint to print messages in different colors.
- *
  *
  * @author Johan Fredrik Wilvang
  * @version 2.2.0
@@ -17,9 +15,8 @@ import java.util.Iterator;
  */
 
 public class Print {
-
   private final ConsoleColor color;
-
+  private final Object[] trainInformationHeader;
   /**
    * Creates object of class Print. The object contains an object of class ColorPrint.
    *
@@ -27,6 +24,8 @@ public class Print {
    */
   public Print() {
     this.color = new ConsoleColor();
+    this.trainInformationHeader = new Object[] {"Departure time:", "Line:", "Train number:",
+        "Destination:", "Delay:", "Track number:"};
   }
 
   /**
@@ -84,7 +83,8 @@ public class Print {
    */
   public void printExit() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Thank you for using the train dispatch system! "));
+    color.printBlueBackground(
+        color.printWhiteBold(" Thank you for using the train dispatch system! "));
     color.printBlue("\nWe hope to see you again soon! Have a great rest of ");
     color.printBlue("your day!");
   }
@@ -118,7 +118,7 @@ public class Print {
    * Prints the status bar. The status bar contains the current time and the number of train
    * departures due today.
    *
-   * @param time The current time.
+   * @param time           The current time.
    * @param numberOfTrains The number of train departures due today.
    * @since 1.9.0
    */
@@ -168,7 +168,7 @@ public class Print {
    *
    * @since 2.2.0
    */
-  public void printSelectTrainMenu(){
+  public void printSelectTrainMenu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Select by train number");
@@ -182,7 +182,7 @@ public class Print {
    *
    * @since 2.2.0
    */
-  public void printEditTrainMenu(){
+  public void printEditTrainMenu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Please select an option: "));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Set departure time");
@@ -203,10 +203,11 @@ public class Print {
    */
   public void updateClockOption() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(" Changing the system time of the application "));
+    color.printBlueBackground(
+        color.printWhiteBold(" Changing the system time of the application "));
     color.printBlue("\nCAUTION: The train departures that is due to depart");
-    color.printBlue("before the new selected time, " +
-        color.printBlueBold("will be removed."));
+    color.printBlue("before the new selected time, "
+        + color.printBlueBold("will be removed."));
     printSeparator();
   }
 
@@ -221,7 +222,7 @@ public class Print {
     color.printBlue("\nThe mandatory information that is required to add a new ");
     color.printBlue("train departure is the departure time, train number, ");
     color.printBlue("destination and train line. The new train departure must ");
-    color.printBlue("have a unique train number. The track number is set to -1" );
+    color.printBlue("have a unique train number. The track number is set to -1");
     color.printBlue("to default. You will be prompted an option to change this ");
     color.printBlue("later.");
     color.printBlue("\nCATION: If the train number already exists or the train");
@@ -236,12 +237,11 @@ public class Print {
    * @param trainIterator The train iterator containing the train departures.
    * @since 1.9.0
    */
-  public void printTrainDeparture(Iterator<TrainDeparture> trainIterator){
-    while (trainIterator.hasNext()){
-      TrainDeparture train = trainIterator.next();
-      System.out.printf(ConsoleColor.ANSI_WHITE + "%-20s %-20s %-20s %-20s %-20s %-20s%n",
-          train.getTrainNumber(),train.getRealDepartureTime(), train.getMinutesDelay()
-              + " minutes", train.getTrainLine(), train.getDestination(), train.getTrackNumber());
+  public void printTrainDeparture(Iterator<TrainDeparture> trainIterator) {
+    while (trainIterator.hasNext()) {
+      System.out.printf(
+          "%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.ANSI_WHITE),
+          trainDepartureInformation(trainIterator));
     }
   }
 
@@ -255,11 +255,40 @@ public class Print {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Train Information Table "));
     color.printBlue("");
-    System.out.printf(ConsoleColor.BLUE_BOLD + "%-20s %-20s %-20s %-20s %-20s %-20s%n",
-        "Train number:", "Departure time:", "Delay:", "Line:", "Destination:", "Track number:");
+    System.out.printf("%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.BLUE_BOLD),
+        this.trainInformationHeader);
     printLargeSeparator();
     printTrainDeparture(trainIterator);
     printLargeSeparator();
+  }
+
+  /**
+   * Prints the information of the selected train departure. The method will print the information
+   * of the train departures in the train iterator. The information about the track number and
+   * will only be printed if it is specified in the train departure
+   *
+   * @param trainIterator The train iterator containing the train departures.
+   * @return The information of the selected train departure.
+   * @since 2.3.0
+   */
+  public Object[] trainDepartureInformation(Iterator<TrainDeparture> trainIterator) {
+    TrainDeparture train = trainIterator.next();
+    Object[] trainInformation = {train.getRealDepartureTime(), train.getTrainLine(),
+        + train.getTrainNumber(), train.getDestination(), train.getMinutesDelay() + " minutes",
+        train.getTrackNumber()};
+    if (train.getMinutesDelay() > 0 && train.getTrackNumber() == -1) {
+      trainInformation[4] =  train.getMinutesDelay() + " minutes";
+      trainInformation[5] = "";
+    } else if (train.getMinutesDelay() > 0 && train.getTrackNumber() != -1) {
+      trainInformation[0] = train.getRealDepartureTime();
+      trainInformation[4] = train.getMinutesDelay() + " minutes";
+    } else if (train.getMinutesDelay() == 0 && train.getTrackNumber() == -1) {
+      trainInformation[4] = "";
+      trainInformation[5] = "";
+    } else {
+      trainInformation[4] = "";
+    }
+    return trainInformation;
   }
 
   /**
@@ -289,7 +318,7 @@ public class Print {
    *
    * @since 2.2.0
    */
-  public void errorEmptyIterator(){
+  public void errorEmptyIterator() {
     System.err.println("The train selected does not exist");
     System.err.println("Please select a train from the train information table.");
   }
@@ -300,12 +329,12 @@ public class Print {
    * @param trainIterator The train iterator containing the train departures.
    * @since 1.9.0
    */
-  public void printAddedTrain(Iterator<TrainDeparture> trainIterator){
+  public void printAddedTrain(Iterator<TrainDeparture> trainIterator) {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" New Train Departure "));
     color.printBlue("");
-    System.out.printf(ConsoleColor.BLUE_BOLD + "%-20s %-20s %-20s %-20s %-20s %-20s%n",
-        "Train number:", "Departure time:", "Delay:", "Line:", "Destination:", "Track number:");
+    System.out.printf("%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.BLUE_BOLD),
+        this.trainInformationHeader);
     printLargeSeparator();
     printTrainDeparture(trainIterator);
     printLargeSeparator();
@@ -318,14 +347,19 @@ public class Print {
    * @param trainIterator The train iterator containing the train departures.
    * @since 2.2.0
    */
-  public void printSelectedTrain(Iterator<TrainDeparture> trainIterator){
+  public void printSelectedTrain(Iterator<TrainDeparture> trainIterator) {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" Selected Train Departure "));
     color.printBlue("");
-    System.out.printf(ConsoleColor.BLUE_BOLD + "%-20s %-20s %-20s %-20s %-20s %-20s%n",
-        "Train number:", "Departure time:", "Delay:", "Line:", "Destination:", "Track number:");
+    System.out.printf("%s%%-20s %%-20s %%-20s %%-20s %%-20s %%-20s%%n".formatted(ConsoleColor.BLUE_BOLD),
+        this.trainInformationHeader);
     printLargeSeparator();
     printTrainDeparture(trainIterator);
     printLargeSeparator();
+  }
+
+  public void promtSelectOption(){
+    color.printCyan("Please enter the number associated with the option");
+    color.printCyan("you want to select ::");
   }
 }

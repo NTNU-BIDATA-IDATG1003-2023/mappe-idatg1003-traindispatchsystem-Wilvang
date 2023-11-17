@@ -8,13 +8,13 @@ import java.util.Iterator;
  * different menus, such as the main menu and the search menu. The class has the methods to start
  * the application and to display the main menu.
  *
- *
  * @author Johan Fredrik Wilvang
  * @version 2.1.0
  * @since 2.1.0
  */
 
 public class Menu {
+
   private final Option option;
   private final Print message;
 
@@ -104,11 +104,11 @@ public class Menu {
    *
    * @since 2.0.0
    */
-  public void searchMenu(){
+  public void searchMenu() {
     this.message.printStatusBar(this.option.displayClock(),
         this.option.numberOfTrainDepartures());
     this.message.printSearchMenu();
-    switch(this.option.selectOption()) {
+    switch (this.option.selectOption()) {
       case Selection.SEARCH_TRAIN_NUMBER:
         break;
       case Selection.SEARCH_DESTINATION:
@@ -128,11 +128,11 @@ public class Menu {
    *
    * @since 2.2.0
    */
-  public void assignTrackMenu(){
+  public void assignTrackMenu() {
     this.message.printStatusBar(this.option.displayClock(),
         this.option.numberOfTrainDepartures());
     this.message.printSelectTrainMenu();
-    switch(this.option.selectOption()) {
+    switch (this.option.selectOption()) {
       case Selection.SEARCH_TRAIN_NUMBER:
         message.printTrainInformationTable(option.getTrainRegister());
         option.assignTrack(option.searchByTrainNumber().next().getTrainNumber());
@@ -153,9 +153,9 @@ public class Menu {
    *
    * @since 2.2.0
    */
-  public void editTrainMenu(){
+  public void editTrainMenu() {
     Iterator<TrainDeparture> trainIterator = option.searchByTrainNumber();
-    if (trainIterator.hasNext()){
+    if (trainIterator.hasNext()) {
       editTrainSubmenu(trainIterator);
     } else {
       message.errorEmptyIterator();
@@ -221,37 +221,37 @@ public class Menu {
    *
    * @since 2.0.0
    */
-  public void addTrainMenu(){
+  public void addTrainMenu() {
     message.addTrainDepartureOption();
-    if(option.askToContinue("continue adding a new train departure")) {
+    if (option.askToContinue("continue adding a new train departure")) {
       addTrainSubmenu();
     }
   }
 
   /**
-   * Displays the submenu for adding a new train departure to the user. The method prompts the user to
-   * enter the train number, the train line, the destination, the departure time and the delay. If
-   * the train departure is successfully added, the method will prompt the user an option to assign
-   * a track number to the train departure. If the train departure is not successfully added, the
-   * method will prompt the user an option to try again.
+   * Displays the submenu for adding a new train departure to the user. The method prompts the user
+   * to enter the train number, the train line, the destination, the departure time and the delay.
+   * If the train departure is successfully added, the method will prompt the user an option to
+   * assign a track number to the train departure. If the train departure is not successfully added,
+   * the method will prompt the user an option to try again.
    *
    * @since 2.1.0
    */
-  public void addTrainSubmenu(){
+  public void addTrainSubmenu() {
     message.printStatusBar(option.displayClock(), option.numberOfTrainDepartures());
     message.printSeparator();
     int before = option.numberOfTrainDepartures();
     int trainNumber = option.addTrainDeparture();
     int after = option.numberOfTrainDepartures();
-    if(before < after){
+    if (before < after) {
       message.printAddedTrain(option.searchByTrainNumber(trainNumber));
-      if (option.askToContinue("assign the track number")){
+      if (option.askToContinue("assign the track number")) {
         option.assignTrack(trainNumber);
       }
     } else {
       message.errorTrainDeparture();
       message.printSeparator();
-      if (option.askToContinue("try again?")){
+      if (option.askToContinue("try again?")) {
         addTrainSubmenu();
       }
     }
