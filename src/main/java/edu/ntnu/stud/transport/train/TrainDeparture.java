@@ -53,7 +53,7 @@ public class TrainDeparture {
    * Return the train's current delay.
    *
    * @return The current delay, displayed as a digital clock.
-   * @since 1.0.0
+   * @since 1.2.0
    */
   public LocalTime getDelay() {
     return this.delay;
@@ -73,7 +73,7 @@ public class TrainDeparture {
    * Return the train's departure time.
    *
    * @return The departure time as a digital clock.
-   * @since 1.0.0
+   * @since 1.2.0
    */
   public LocalTime getDepartureTime() {
     return this.departureTime;
@@ -94,7 +94,7 @@ public class TrainDeparture {
    * Return the train line.
    *
    * @return The train line.
-   * @since 1.0.0
+   * @since 1.2.0
    */
   public String getTrainLine() {
     return this.trainLine;
@@ -104,7 +104,7 @@ public class TrainDeparture {
    * Return the train number.
    *
    * @return The train number.
-   * @since 1.0.0
+   * @since 1.2.0
    */
   public int getTrainNumber() {
     return this.trainNumber;
@@ -114,7 +114,7 @@ public class TrainDeparture {
    * Return the train destination.
    *
    * @return The train destination.
-   * @since 1.0.0
+   * @since 1.2.0
    */
   public String getDestination() {
     return this.destination;
@@ -124,7 +124,7 @@ public class TrainDeparture {
    * Return the train's track number.
    *
    * @return The track number.
-   * @since 1.0.0
+   * @since 1.2.0
    */
   public int getTrackNumber() {
     return this.trackNumber;
