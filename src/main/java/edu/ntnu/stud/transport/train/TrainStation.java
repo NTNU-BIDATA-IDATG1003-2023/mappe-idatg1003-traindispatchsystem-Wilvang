@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * train number or destination. The train station can also assign a track.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.2
+ * @version 2.3.1
  * @since 2.2.2
  */
 

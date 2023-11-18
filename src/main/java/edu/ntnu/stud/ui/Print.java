@@ -10,8 +10,8 @@ import java.util.Iterator;
  * The class uses an object of class ColorPrint to print messages in different colors.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.0
- * @since 2.3.0
+ * @version 2.3.1
+ * @since 2.3.1
  */
 
 public class Print {
@@ -180,7 +180,7 @@ public class Print {
    * Prints the main menu. The main menu contains the different options that the user can choose
    * from.
    *
-   * @since 1.6.2
+   * @since 2.3.1
    */
   public void printMainManu() {
     printSeparator();
@@ -192,6 +192,7 @@ public class Print {
     color.printWhite("[5]" + ConsoleColor.ANSI_BLUE + " Add delay");
     color.printWhite("[6]" + ConsoleColor.ANSI_BLUE + " Search for train");
     color.printWhite("[7]" + ConsoleColor.ANSI_BLUE + " Update clock");
+    color.printWhite("[8]" + ConsoleColor.ANSI_BLUE + " Start new day");
     color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + " Exit");
     printSeparator();
   }
@@ -476,6 +477,16 @@ public class Print {
    */
   public void askIfSure() {
     color.printCyan("Are you sure you want to continue?");
+    color.printCyan(ASK_TO_CONTINUE);
+  }
+
+  /**
+   * Asks the user if they want to edit the selected train departure.
+   *
+   * @since 2.3.1
+   */
+  public void askEditThisDeparture() {
+    color.printCyan("Do you want to edit this train departure?");
     color.printCyan(ASK_TO_CONTINUE);
   }
 

@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
  * in proportion to the delay.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.0
+ * @version 2.3.1
  * @since 2.2.0
  */
 

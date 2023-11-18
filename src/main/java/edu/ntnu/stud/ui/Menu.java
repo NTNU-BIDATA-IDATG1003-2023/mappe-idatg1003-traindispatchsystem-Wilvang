@@ -9,8 +9,8 @@ import java.util.Iterator;
  * the application and to display the main menu.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.0
- * @since 2.3.0
+ * @version 2.3.1
+ * @since 2.3.1
  */
 
 public class Menu {
@@ -112,18 +112,15 @@ public class Menu {
     this.message.printSearchMenu();
     switch (this.option.selectOption()) {
       case Selection.SEARCH_TRAIN_NUMBER:
-        Iterator<TrainDeparture> trainIterator = option.searchByTrainNumber();
-        message.printSelectedTrain(trainIterator);
+        int trainNumber = option.searchByTrainNumber().next().getTrainNumber();
+        message.printSelectedTrain(option.searchByTrainNumber(trainNumber));
+        message.askEditThisDeparture();
         if (option.askToContinue()) {
-          editTrainSubmenu(trainIterator);
+          editTrainSubmenu(option.searchByTrainNumber(trainNumber));
         }
         break;
       case Selection.SEARCH_DESTINATION:
-        Iterator<TrainDeparture> trainDestinationIterator = option.searchByDestination();
-        message.printSelectedTrain(trainDestinationIterator);
-        if (option.askToContinue()) {
-          editTrainSubmenu(trainDestinationIterator);
-        }
+        message.printSelectedTrain(option.searchByDestination());
         break;
       case Selection.RETURN_MAIN_MENU:
         break;

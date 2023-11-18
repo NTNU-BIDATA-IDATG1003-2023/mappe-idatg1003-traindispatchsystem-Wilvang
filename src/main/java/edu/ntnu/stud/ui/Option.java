@@ -15,8 +15,8 @@ import java.util.Iterator;
  * The class uses an object of class Print to print messages to the console.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.0
- * @since 2.2.1
+ * @version 2.3.1
+ * @since 2.3.1
  */
 
 public class Option {
@@ -130,7 +130,6 @@ public class Option {
    * @since 2.1.0
    */
   public Iterator<TrainDeparture> searchByTrainNumber(int trainNumber) {
-    message.inputSearchTrainNumber();
     return this.station.searchByTrainNumber(trainNumber);
   }
 
@@ -288,11 +287,11 @@ public class Option {
    *
    * @param trainNumber The train number of the train departure.
    * @return The train departure with the specified train number.
-   * @since 2.2.0
+   * @since 2.3.1
    */
   public Iterator<TrainDeparture> setTrackNumber(int trainNumber) {
-    message.inputTrackNumber();
     if (searchByTrainNumber(trainNumber).hasNext()) {
+      message.inputTrackNumber();
       station.setNewTrackNumber(trainNumber,
           handler.inputInteger());
     }
