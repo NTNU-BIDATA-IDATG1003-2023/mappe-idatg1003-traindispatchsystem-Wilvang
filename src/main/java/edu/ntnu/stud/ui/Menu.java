@@ -9,8 +9,8 @@ import java.util.Iterator;
  * the application and to display the main menu.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.1
- * @since 2.3.1
+ * @version 2.3.2
+ * @since 2.3.2
  */
 
 public class Menu {
@@ -93,7 +93,7 @@ public class Menu {
         newDayMenu();
         break;
       case Selection.EXIT:
-        message.printExit();
+        exitMenu();
         break;
       default:
         message.errorOption();
@@ -170,7 +170,7 @@ public class Menu {
    * submenu until the user selects the RETURN_TO_MAIN_MENU option.
    *
    * @param trainIterator The iterator containing the train departure to edit.
-   * @since 2.2.0
+   * @since 2.3.2
    */
   public void editTrainSubmenu(Iterator<TrainDeparture> trainIterator) {
     int trainNumber = trainIterator.next().getTrainNumber();
@@ -314,6 +314,23 @@ public class Menu {
     message.askIfSure();
     if (option.askToContinue()) {
       init();
+      start();
+    }
+  }
+
+  /**
+   * Displays the menu for exiting the application to the user. The method prompts the user to
+   * confirm that they want to exit the application. If the user does not confirm that they want
+   * to exit the application, the method will return to the main menu.
+   *
+   * @since 2.3.2
+   */
+  public void exitMenu() {
+    message.exitOption();
+    message.askExit();
+    if (option.askToContinue()) {
+      message.printExit();
+    } else {
       start();
     }
   }

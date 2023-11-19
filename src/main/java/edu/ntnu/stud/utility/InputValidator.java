@@ -11,7 +11,7 @@ import java.util.Scanner;
  * validate different types of user inputs, such as integers, strings and 24-hour clock format.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.1
+ * @version 2.3.2
  * @since 2.3.0
  */
 

@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
  * train number or destination. The train station can also assign a track.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.1
- * @since 2.2.2
+ * @version 2.3.2
+ * @since 2.3.2
  */
 
 public final class TrainStation {
@@ -66,7 +66,7 @@ public final class TrainStation {
    * train departures are sorted by departure time.
    *
    * @return An iterator of all train departures from the train register.
-   * @since 1.7.0
+   * @since 1.6.0
    */
   public Iterator<TrainDeparture> getTrainRegister() {
     return this.trainRegister.values().stream()
@@ -143,7 +143,7 @@ public final class TrainStation {
    * Removes the train departure with the specified train number from the train register.
    *
    * @param trainNumber The train number of the train departure.
-   * @since 1.7.0
+   * @since 2.2.1
    */
   public void removeTrainDeparture(int trainNumber) {
     this.trainRegister.remove(trainNumber);
@@ -155,6 +155,7 @@ public final class TrainStation {
    *
    * @param trainNumber The train number of the train departure.
    * @return The train departure with the specified train number as an iterator.
+   * @since 1.6.0
    */
   public Iterator<TrainDeparture> searchByTrainNumber(int trainNumber) {
     return this.trainRegister.values().stream()
@@ -168,7 +169,7 @@ public final class TrainStation {
    *
    * @param destination The destination of the train departure.
    * @return The train departures with the specified destination as an iterator.
-   * @since 1.7.0
+   * @since 1.6.0
    */
   public Iterator<TrainDeparture> searchByDestination(String destination) {
     return this.trainRegister.values().stream()
@@ -233,7 +234,7 @@ public final class TrainStation {
    */
   public void setNewDepartureTime(int trainNumber, String newDepartureTime) {
     Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
-    if (trainIterator.hasNext()) {
+    if (trainIterator.hasNext() && LocalTime.parse(newDepartureTime).isAfter(this.stationClock)) {
       trainIterator.next().setDepartureTime(newDepartureTime);
     }
   }
@@ -273,10 +274,10 @@ public final class TrainStation {
    * Removes all train departures that already departed in the train station, from the train
    * register.
    *
-   * @since 2.2.2
+   * @since 2.3.2
    */
   public void removeDepartedTrains() {
-    this.trainRegister.values().stream().filter(train -> train.getDepartureTime()
+    this.trainRegister.values().stream().filter(train -> train.getRealDepartureTime()
             .isBefore(this.stationClock)).collect(Collectors.toCollection(ArrayList::new))
         .forEach(train -> this.trainRegister.remove(train.getTrainNumber()));
   }

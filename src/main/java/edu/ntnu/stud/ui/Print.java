@@ -10,8 +10,8 @@ import java.util.Iterator;
  * The class uses an object of class ColorPrint to print messages in different colors.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.1
- * @since 2.3.1
+ * @version 2.3.2
+ * @since 2.3.2
  */
 
 public class Print {
@@ -134,7 +134,21 @@ public class Print {
     color.printBlueBackground(color.printWhiteBold(" Starting a new day "));
     color.printBlue("\nCAUTION: When starting a new day, all the train departures");
     color.printBlue("that has departed will be removed from the train register.");
-    color.printBlue("You will be prompted to enter the current time of the new day.");
+    printSeparator();
+  }
+
+  /**
+   * Prints an information message explaining the EXIT option. The message is printed when the user
+   * wants to exit the application. The message explains that all the train departures that has been
+   * added will be removed from the train register.
+   *
+   * @since 2.3.2
+   */
+  public void exitOption() {
+    printSeparator();
+    color.printBlueBackground(color.printWhiteBold(" Exiting the application "));
+    color.printBlue("\nCAUTION: When exiting the application, all train");
+    color.printBlue("departures that has been added will be removed.");
     printSeparator();
   }
 
@@ -184,7 +198,7 @@ public class Print {
    */
   public void printMainManu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
+    color.printBlueBackground(color.printWhiteBold(" MAIN MENU "));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " View information table");
     color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Add new train departure");
     color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Edit train departure");
@@ -205,7 +219,7 @@ public class Print {
    */
   public void printSearchMenu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
+    color.printBlueBackground(color.printWhiteBold(" SEARCH MENU "));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Search by train number");
     color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Search by destination");
     color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
@@ -220,7 +234,7 @@ public class Print {
    */
   public void printSelectTrainMenu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
+    color.printBlueBackground(color.printWhiteBold(" SELECT TRAIN MENU "));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Select by train number");
     color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
     printSeparator();
@@ -234,7 +248,7 @@ public class Print {
    */
   public void printEditTrainMenu() {
     printSeparator();
-    color.printBlueBackground(color.printWhiteBold(SELECT_OPTION));
+    color.printBlueBackground(color.printWhiteBold(" EDIT TRAIN MENU "));
     color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Set departure time");
     color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Set train number");
     color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Set train line");
@@ -266,18 +280,21 @@ public class Print {
    *
    * @param trainIterator The train iterator containing the train departures.
    * @return The information of the selected train departure.
-   * @since 2.2.1
+   * @since 2.3.2
    */
   public Object[] trainDepartureInformation(Iterator<TrainDeparture> trainIterator) {
     TrainDeparture train = trainIterator.next();
-    Object[] trainInformation = {train.getRealDepartureTime(), train.getTrainLine(),
+    Object[] trainInformation = {train.getDepartureTime(), train.getTrainLine(),
         + train.getTrainNumber(), train.getDestination(), train.getDelay(),
         train.getTrackNumber()};
     if (train.getMinutesDelay() > 0 && train.getTrackNumber() == -1) {
+      trainInformation[0] = color.printStrikeThrough("" + train.getDepartureTime())
+          + ConsoleColor.ANSI_WHITE + "   " + train.getRealDepartureTime() + "       ";
       trainInformation[4] =  train.getDelay();
       trainInformation[5] = "";
     } else if (train.getMinutesDelay() > 0 && train.getTrackNumber() != -1) {
-      trainInformation[0] = train.getRealDepartureTime();
+      trainInformation[0] = color.printStrikeThrough("" + train.getDepartureTime())
+          + ConsoleColor.ANSI_WHITE + "   " + train.getRealDepartureTime() + "       ";
       trainInformation[4] = train.getDelay();
     } else if (train.getMinutesDelay() == 0 && train.getTrackNumber() == -1) {
       trainInformation[4] = "";
@@ -487,6 +504,16 @@ public class Print {
    */
   public void askEditThisDeparture() {
     color.printCyan("Do you want to edit this train departure?");
+    color.printCyan(ASK_TO_CONTINUE);
+  }
+
+  /**
+   * Asks the user if they want to exit the application.
+   *
+   * @since 2.3.2
+   */
+  public void askExit() {
+    color.printCyan("Are you sure you want to exit the application?");
     color.printCyan(ASK_TO_CONTINUE);
   }
 
