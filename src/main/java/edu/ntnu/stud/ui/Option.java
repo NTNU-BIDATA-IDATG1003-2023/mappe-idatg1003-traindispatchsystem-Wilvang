@@ -15,8 +15,8 @@ import java.util.Iterator;
  * The class uses an object of class Print to print messages to the console.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.3
- * @since 2.3.3
+ * @version 2.4.0
+ * @since 2.4.0
  */
 
 public class Option {
@@ -40,14 +40,20 @@ public class Option {
    * Sets the clock on the train station to the specified time by the user. The clock will not be
    * updated if the user writes the keyword 'q' to quit the action.
    *
-   * @since 2.0.0
+   * @since 2.4.0
    */
-  public void updateClock() {
+  public boolean updateClock() {
     message.inputTime();
+    boolean newDay = false;
     String time = this.handler.validateTimeOption();
     if (!time.equals("q")) {
+      if (LocalTime.parse(time).isBefore(displayClock())) {
+        message.errorTimeBefore();
+        newDay = true;
+      }
       this.station.setStationClock(time);
     }
+    return newDay;
   }
 
   /**
@@ -58,6 +64,15 @@ public class Option {
    */
   public LocalTime displayClock() {
     return this.station.getStationClock();
+  }
+
+  /**
+   * Resets the clock on the train station to 00:00.
+   *
+   * @since 2.4.0
+   */
+  public void resetClock() {
+    this.station.resetClock();
   }
 
   /**
@@ -293,8 +308,25 @@ public class Option {
     if (searchByTrainNumber(trainNumber).hasNext()) {
       message.inputTrackNumber();
       station.setNewTrackNumber(trainNumber,
-          handler.validateInteger());
+          handler.validatePositiveInteger());
     }
     return searchByTrainNumber(trainNumber);
+  }
+
+  /**
+   * Removes the train departure with the specified train number from the train register. If the
+   * train number does not exist in the train register, no train departure will be removed.
+   *
+   * @param trainNumber The train number of the train departure.
+   * @return <code>true</code> if the train departure was removed from the train register,
+   *        <code>false</code> if the train departure was not removed from the train register.
+   * @since 2.4.0
+   */
+  public boolean removeTrainDeparture(int trainNumber) {
+    boolean existingTrain = searchByTrainNumber(trainNumber).hasNext();
+    if (existingTrain) {
+      station.removeTrainDeparture(trainNumber);
+    }
+    return existingTrain;
   }
 }

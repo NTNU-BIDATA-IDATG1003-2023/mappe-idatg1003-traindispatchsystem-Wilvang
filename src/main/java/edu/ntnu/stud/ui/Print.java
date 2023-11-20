@@ -10,8 +10,8 @@ import java.util.Iterator;
  * The class uses an object of class ColorPrint to print messages in different colors.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.2
- * @since 2.3.2
+ * @version 2.4.0
+ * @since 2.4.0
  */
 
 public class Print {
@@ -22,7 +22,11 @@ public class Print {
   private static final String CHECK_FORMAT = "The format provided was not accepted.";
   private static final String PLEASE_ENTER = "Please enter ";
   private static final String DEPARTURE = ConsoleColor.ANSI_CYAN + " for this departure";
-  private static final String RETURN = " Return to main menu";
+  private static final String SET = " Set";
+  private static final String SEARCH = " Search";
+  private static final String SELECT = " Select";
+  private static final String RETURN = " Return";
+  private static final String MAIN_MENU = " to main menu";
 
   /**
    * Creates object of class Print. The object contains an object of class ColorPrint. The train
@@ -195,20 +199,28 @@ public class Print {
    * Prints the main menu. The main menu contains the different options that the user can choose
    * from.
    *
-   * @since 2.3.1
+   * @since 2.4.0
    */
   public void printMainManu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" MAIN MENU "));
-    color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " View information table");
-    color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Add new train departure");
-    color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Edit train departure");
-    color.printWhite("[4]" + ConsoleColor.ANSI_BLUE + " Assign track");
-    color.printWhite("[5]" + ConsoleColor.ANSI_BLUE + " Set delay");
-    color.printWhite("[6]" + ConsoleColor.ANSI_BLUE + " Search for train");
-    color.printWhite("[7]" + ConsoleColor.ANSI_BLUE + " Update clock");
-    color.printWhite("[8]" + ConsoleColor.ANSI_BLUE + " Start new day");
-    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + " Exit");
+    color.printWhite("[1]" + color.printBlueBold(" View")
+        + ConsoleColor.ANSI_BLUE + " information table");
+    color.printWhite("[2]" + color.printBlueBold(" Add")
+        + ConsoleColor.ANSI_BLUE + " new train departure");
+    color.printWhite("[3]" + color.printBlueBold(" Remove")
+        + ConsoleColor.ANSI_BLUE + " train departure");
+    color.printWhite("[4]" + color.printBlueBold(" Edit")
+        + ConsoleColor.ANSI_BLUE + " train departure");
+    color.printWhite("[5]" + color.printBlueBold(SET)
+        + ConsoleColor.ANSI_BLUE + " delay");
+    color.printWhite("[6]" + color.printBlueBold(" Assign")
+        + ConsoleColor.ANSI_BLUE + " track number");
+    color.printWhite("[7]" + color.printBlueBold(SEARCH)
+        + ConsoleColor.ANSI_BLUE + " for train");
+    color.printWhite("[8]" + color.printBlueBold(" Update")
+        + ConsoleColor.ANSI_BLUE + " clock");
+    color.printWhite("[9]" + color.printBlueBold(" Exit"));
     printSeparator();
   }
 
@@ -216,14 +228,17 @@ public class Print {
    * Prints the search menu. The search menu contains the different options that the user can choose
    * from.
    *
-   * @since 1.6.2
+   * @since 2.4.0
    */
   public void printSearchMenu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" SEARCH MENU "));
-    color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Search by train number");
-    color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Search by destination");
-    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
+    color.printWhite("[1]" + color.printBlueBold(SEARCH)
+        + ConsoleColor.ANSI_BLUE + " by train number");
+    color.printWhite("[2]" + color.printBlueBold(SEARCH)
+        + ConsoleColor.ANSI_BLUE + " by destination");
+    color.printWhite("[9]" + color.printBlueBold(RETURN)
+        + ConsoleColor.ANSI_BLUE + MAIN_MENU);
     printSeparator();
   }
 
@@ -231,13 +246,15 @@ public class Print {
    * Prints the select train menu. The select train menu contains the different options that the
    * user can choose from.
    *
-   * @since 2.2.0
+   * @since 2.4.0
    */
   public void printSelectTrainMenu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" SELECT TRAIN MENU "));
-    color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Select by train number");
-    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
+    color.printWhite("[1]" + color.printBlueBold(SELECT)
+        + ConsoleColor.ANSI_BLUE + " by train number");
+    color.printWhite("[9]" + color.printBlueBold(RETURN)
+        + ConsoleColor.ANSI_BLUE + MAIN_MENU);
     printSeparator();
   }
 
@@ -245,19 +262,27 @@ public class Print {
    * Prints the edit train menu. The edit train menu contains the different options that the user
    * can choose from.
    *
-   * @since 2.2.0
+   * @since 2.4.0
    */
   public void printEditTrainMenu() {
     printSeparator();
     color.printBlueBackground(color.printWhiteBold(" EDIT TRAIN MENU "));
-    color.printWhite("[1]" + ConsoleColor.ANSI_BLUE + " Set departure time");
-    color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Set train number");
-    color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Set train line");
-    color.printWhite("[4]" + ConsoleColor.ANSI_BLUE + " Set end destination");
-    color.printWhite("[5]" + ConsoleColor.ANSI_BLUE + " Set delay");
-    color.printWhite("[6]" + ConsoleColor.ANSI_BLUE + " Set track number");
-    color.printWhite("[7]" + ConsoleColor.ANSI_BLUE + " Select new train");
-    color.printWhite("[9]" + ConsoleColor.ANSI_BLUE + RETURN);
+    color.printWhite("[1]" + color.printBlueBold(SET)
+        + ConsoleColor.ANSI_BLUE + " departure time");
+    color.printWhite("[2]" + color.printBlueBold(SET)
+        + ConsoleColor.ANSI_BLUE + " train number");
+    color.printWhite("[3]" + color.printBlueBold(SET)
+        + ConsoleColor.ANSI_BLUE + " train line");
+    color.printWhite("[4]" + color.printBlueBold(SET)
+        + ConsoleColor.ANSI_BLUE + " end destination");
+    color.printWhite("[5]" + color.printBlueBold(SET)
+        + ConsoleColor.ANSI_BLUE + " delay");
+    color.printWhite("[6]" + color.printBlueBold(SET)
+        + ConsoleColor.ANSI_BLUE + " track number");
+    color.printWhite("[7]" + color.printBlueBold(SELECT)
+        + ConsoleColor.ANSI_BLUE + " Select new train");
+    color.printWhite("[9]" + color.printBlueBold(RETURN)
+        + ConsoleColor.ANSI_BLUE + MAIN_MENU);
     printSeparator();
   }
 
@@ -527,6 +552,11 @@ public class Print {
     color.printCyan(ASK_TO_CONTINUE);
   }
 
+  public void askNewDay() {
+    color.printCyan("Do you want to start a new day?");
+    color.printCyan(ASK_TO_CONTINUE);
+  }
+
   /**
    * Prints an error message explaining that the user chose an invalid option.
    *
@@ -618,5 +648,10 @@ public class Print {
   public void errorBooleanFormat() {
     System.err.println(CHECK_FORMAT);
     System.err.println("Please make sure to enter 'y' for yes or 'n' for no.");
+  }
+
+  public void errorTimeBefore() {
+    System.err.println(CHECK_FORMAT);
+    System.err.println("The time selected is before the current time.");
   }
 }

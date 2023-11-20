@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
  * train number or destination. The train station can also assign a track.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.3
- * @since 2.3.2
+ * @version 2.4.0
+ * @since 2.4.0
  */
 
 public final class TrainStation {
@@ -98,6 +98,15 @@ public final class TrainStation {
       this.stationClock = LocalTime.parse(time);
     }
     removeDepartedTrains();
+  }
+
+  /**
+   * Resets the station clock to 00:00.
+   *
+   * @since 2.4.0
+   */
+  public void resetClock() {
+    this.stationClock = LocalTime.parse("00:00");
   }
 
   /**
@@ -277,7 +286,7 @@ public final class TrainStation {
    * @since 2.3.2
    */
   public void removeDepartedTrains() {
-    this.trainRegister.values().stream().filter(train -> train.getRealDepartureTime()
+    this.trainRegister.values().stream().filter(train -> train.getDepartureTime()
             .isBefore(this.stationClock)).collect(Collectors.toCollection(ArrayList::new))
         .forEach(train -> this.trainRegister.remove(train.getTrainNumber()));
   }
