@@ -7,8 +7,8 @@ package edu.ntnu.stud.ui;
  * and cyan. The messages can also be displayed with background colors and bold characters.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.2
- * @since 2.3.1
+ * @version 2.3.3
+ * @since 2.3.3
  */
 
 public class ConsoleColor {
@@ -26,6 +26,7 @@ public class ConsoleColor {
   public static final String BLACK_BOLD = "\033[1;30m";
   public static final String WHITE_BOLD = "\033[1;97m";
   public static final String STRIKE_THROUGH = "\u001B[9m";
+  public static final String UNDO_STRIKE_THROUGH = "\u001B[29m";
 
   /**
    * Prints a message to the console in the specified color.
@@ -150,6 +151,6 @@ public class ConsoleColor {
    * @since 2.3.1
    */
   public String printStrikeThrough(String message) {
-  return STRIKE_THROUGH + message + ANSI_RESET;
+  return STRIKE_THROUGH + message + UNDO_STRIKE_THROUGH;
   }
 }

@@ -20,7 +20,8 @@ public class Print {
   private static final String TABLE_FORMAT = "%-20s %-20s %-20s %-20s %-20s %-20s%n";
   private static final String ASK_TO_CONTINUE = "Please enter 'y' for yes or 'n' for no ::";
   private static final String CHECK_FORMAT = "The format provided was not accepted.";
-  private static final String SELECT_OPTION = " Please select an option: ";
+  private static final String PLEASE_ENTER = "Please enter ";
+  private static final String DEPARTURE = ConsoleColor.ANSI_CYAN + " for this departure";
   private static final String RETURN = " Return to main menu";
 
   /**
@@ -203,7 +204,7 @@ public class Print {
     color.printWhite("[2]" + ConsoleColor.ANSI_BLUE + " Add new train departure");
     color.printWhite("[3]" + ConsoleColor.ANSI_BLUE + " Edit train departure");
     color.printWhite("[4]" + ConsoleColor.ANSI_BLUE + " Assign track");
-    color.printWhite("[5]" + ConsoleColor.ANSI_BLUE + " Add delay");
+    color.printWhite("[5]" + ConsoleColor.ANSI_BLUE + " Set delay");
     color.printWhite("[6]" + ConsoleColor.ANSI_BLUE + " Search for train");
     color.printWhite("[7]" + ConsoleColor.ANSI_BLUE + " Update clock");
     color.printWhite("[8]" + ConsoleColor.ANSI_BLUE + " Start new day");
@@ -289,12 +290,12 @@ public class Print {
         train.getTrackNumber()};
     if (train.getMinutesDelay() > 0 && train.getTrackNumber() == -1) {
       trainInformation[0] = color.printStrikeThrough("" + train.getDepartureTime())
-          + ConsoleColor.ANSI_WHITE + "   " + train.getRealDepartureTime() + "       ";
+          + "  " + train.getRealDepartureTime() + "        ";
       trainInformation[4] =  train.getDelay();
       trainInformation[5] = "";
     } else if (train.getMinutesDelay() > 0 && train.getTrackNumber() != -1) {
       trainInformation[0] = color.printStrikeThrough("" + train.getDepartureTime())
-          + ConsoleColor.ANSI_WHITE + "   " + train.getRealDepartureTime() + "       ";
+          +  "  " + train.getRealDepartureTime() + "        ";
       trainInformation[4] = train.getDelay();
     } else if (train.getMinutesDelay() == 0 && train.getTrackNumber() == -1) {
       trainInformation[4] = "";
@@ -363,7 +364,7 @@ public class Print {
    * @since 2.3.0
    */
   public void inputSelectOption() {
-    color.printCyan("Please enter the number associated with the option");
+    color.printCyan("Please enter the number associated with " + color.printCyanBold("the option"));
     color.printCyan("you want to select ::");
   }
 
@@ -373,7 +374,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputTime() {
-    color.printCyan("Please enter the time in the format (HH:mm)");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the time")
+        + ConsoleColor.ANSI_CYAN + " in the format (HH:mm)");
     color.printCyan("or enter 'q' to set the time to 00:00 ::");
   }
 
@@ -383,7 +385,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputDepartureTime() {
-    color.printCyan("Please enter the departure time in the format (HH:mm)");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the departure time")
+        + ConsoleColor.ANSI_CYAN + " in the format (HH:mm)");
     color.printCyan("Make sure to select a time after the system clock ::");
   }
 
@@ -393,7 +396,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputTrainNumber() {
-    color.printCyan("Please enter the train number associated with the departure");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the train number")
+        + ConsoleColor.ANSI_CYAN + " associated with the departure");
     color.printCyan("The train number must be unique and cannot be negative ::");
   }
 
@@ -403,7 +407,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputTrainLine() {
-    color.printCyan("Please enter the train line for this departure");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the train line")
+        + DEPARTURE);
     color.printCyan("A train line could be (RE12, L2, F3, etc.) ::");
   }
 
@@ -413,7 +418,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputDestination() {
-    color.printCyan("Please enter the destination for this departure");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the destination")
+        + DEPARTURE);
     color.printCyan("The destination must be a sequence of characters ::");
   }
 
@@ -423,7 +429,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputDelay() {
-    color.printCyan("Please enter the delay in minutes");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the delay")
+        + ConsoleColor.ANSI_CYAN + " in minutes");
     color.printCyan("The delay must be a positive integer ::");
   }
 
@@ -433,7 +440,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputTrackNumber() {
-    color.printCyan("Please enter the track number for this departure");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the track number")
+        + DEPARTURE);
     color.printCyan("The track number must be a positive integer ::");
   }
 
@@ -443,7 +451,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputSearchTrainNumber() {
-    color.printCyan("Please enter the train number you want to search for");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the train number")
+        + ConsoleColor.ANSI_CYAN + " you want to search for");
     color.printCyan("The train number must be a positive integer ::");
   }
 
@@ -453,7 +462,8 @@ public class Print {
    * @since 2.3.0
    */
   public void inputSearchDestination() {
-    color.printCyan("Please enter the destination you want to search for");
+    color.printCyan(PLEASE_ENTER + color.printCyanBold("the destination")
+        + ConsoleColor.ANSI_CYAN + " you want to search for");
     color.printCyan("The destination must be a sequence of characters ::");
   }
 
@@ -588,6 +598,16 @@ public class Print {
   public void errorIntegerFormat() {
     System.err.println(CHECK_FORMAT);
     System.err.println("Please make sure to enter a whole number.");
+  }
+
+  /**
+   * Prints an error message explaining that the integer must be a positive number.
+   *
+   * @since 2.3.3
+   */
+  public void errorPositiveIntegerFormat() {
+    System.err.println(CHECK_FORMAT);
+    System.err.println("Please make sure to enter a positive number.");
   }
 
   /**

@@ -80,7 +80,7 @@ public class Menu {
       case Selection.ASSIGN_TRACK:
         assignTrackMenu();
         break;
-      case Selection.ADD_DELAY:
+      case Selection.SET_DELAY:
         addDelayMenu();
         break;
       case Selection.SEARCH_TRAIN:
@@ -204,7 +204,6 @@ public class Menu {
         editTrainSubmenu(trainIterator);
         break;
       case Selection.SELECT_NEW_TRAIN:
-        message.printTrainInformationTable(this.option.getTrainRegister());
         editTrainMenu();
         break;
       case Selection.RETURN_MAIN_MENU:
@@ -240,6 +239,7 @@ public class Menu {
    * @since 2.1.0
    */
   public void addTrainSubmenu() {
+    message.printTrainInformationTable(option.getTrainRegister());
     message.printStatusBar(option.displayClock(), option.numberOfTrainDepartures());
     message.printSeparator();
     int before = option.numberOfTrainDepartures();
@@ -287,7 +287,16 @@ public class Menu {
    */
   public void addDelayMenu() {
     message.printTrainInformationTable(option.getTrainRegister());
-    option.setDelay(option.searchByTrainNumber().next().getTrainNumber());
+    int trainNumber = option.searchByTrainNumber().next().getTrainNumber();
+    if (option.searchByTrainNumber(trainNumber).hasNext()) {
+      option.setDelay(trainNumber);
+    } else {
+      message.errorEmptyIterator();
+      message.askTryAgain();
+      if (option.askToContinue()) {
+        addTrainMenu();
+      }
+    }
   }
 
   /**

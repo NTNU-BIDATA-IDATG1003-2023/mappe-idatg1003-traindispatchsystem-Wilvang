@@ -11,8 +11,8 @@ import java.util.Scanner;
  * validate different types of user inputs, such as integers, strings and 24-hour clock format.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.2
- * @since 2.3.0
+ * @version 2.3.3
+ * @since 2.3.3
  */
 
 public class InputValidator {
@@ -43,19 +43,19 @@ public class InputValidator {
    * @return The user input as a string.
    * @since 2.3.0
    */
-  public String inputString() {
-    String inputString = "";
+  public String validateString() {
+    String word = "";
     correctInput = false;
     while (!correctInput) {
       if (!inputReader.hasNextInt()) {
-        inputString = inputReader.nextLine();
+        word = inputReader.nextLine();
         correctInput = true;
       } else {
         message.errorStringFormat();
         inputReader.next();
       }
     }
-    return inputString;
+    return word;
   }
 
   /**
@@ -66,12 +66,12 @@ public class InputValidator {
    * @return The user input as an integer.
    * @since 2.3.0
    */
-  public int inputInteger() {
+  public int validateInteger() {
     correctInput = false;
-    int inputInteger = 0;
+    int number = 0;
     while (!correctInput) {
       if (inputReader.hasNextInt()) {
-        inputInteger = inputReader.nextInt();
+        number = inputReader.nextInt();
         inputReader.nextLine();
         correctInput = true;
       } else {
@@ -79,7 +79,35 @@ public class InputValidator {
         inputReader.next();
       }
     }
-    return inputInteger;
+    return number;
+  }
+
+  /**
+   * Returns the user input as an integer. The method validates the user input to make sure that the
+   * input is a positive number. If the user input is not a whole number, the user will be prompted
+   * to enter a new input. The method will continue to prompt the user until the format is correct.
+   *
+   * @return The user input as an integer.
+   * @since 2.3.3
+   */
+  public int validatePositiveInteger() {
+    correctInput = false;
+    int number = 0;
+    while (!correctInput) {
+      if (inputReader.hasNextInt()) {
+        number = inputReader.nextInt();
+        inputReader.nextLine();
+        if (number > 0) {
+          correctInput = true;
+        } else {
+          message.errorPositiveIntegerFormat();
+        }
+      } else {
+        message.errorIntegerFormat();
+        inputReader.next();
+      }
+    }
+    return number;
   }
 
   /**

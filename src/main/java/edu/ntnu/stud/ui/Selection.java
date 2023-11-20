@@ -17,7 +17,7 @@ public class Selection {
   public static final int ADD_TRAIN = 2;
   public static final int EDIT_TRAIN = 3;
   public static final int ASSIGN_TRACK = 4;
-  public static final int ADD_DELAY = 5;
+  public static final int SET_DELAY = 5;
   public static final int SEARCH_TRAIN = 6;
   public static final int UPDATE_CLOCK = 7;
   public static final int NEW_DAY = 8;
@@ -31,7 +31,6 @@ public class Selection {
   public static final int SET_TRAIN_NUMBER = 2;
   public static final int SET_TRAIN_LINE = 3;
   public static final int SET_DESTINATION = 4;
-  public static final int SET_DELAY = 5;
   public static final int SET_TRACK_NUMBER = 6;
   public static final int SELECT_NEW_TRAIN = 7;
 

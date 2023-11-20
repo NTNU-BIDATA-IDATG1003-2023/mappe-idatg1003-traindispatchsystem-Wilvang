@@ -15,8 +15,8 @@ import java.util.Iterator;
  * The class uses an object of class Print to print messages to the console.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.3.2
- * @since 2.3.1
+ * @version 2.3.3
+ * @since 2.3.3
  */
 
 public class Option {
@@ -79,7 +79,7 @@ public class Option {
    */
   public int selectOption() {
     message.inputSelectOption();
-    return this.handler.inputInteger();
+    return this.handler.validateInteger();
   }
 
   /**
@@ -96,11 +96,11 @@ public class Option {
     message.inputDepartureTime();
     String departureTime = handler.validateTime();
     message.inputTrainNumber();
-    int trainNumber = handler.inputInteger();
+    int trainNumber = handler.validatePositiveInteger();
     message.inputTrainLine();
-    String trainLine = handler.inputString();
+    String trainLine = handler.validateString();
     message.inputDestination();
-    String destination = handler.inputString();
+    String destination = handler.validateString();
     this.station.addTrainDeparture(departureTime, trainNumber, trainLine, destination);
     return trainNumber;
   }
@@ -116,7 +116,7 @@ public class Option {
    */
   public Iterator<TrainDeparture> searchByTrainNumber() {
     message.inputSearchTrainNumber();
-    int trainNumber = handler.inputInteger();
+    int trainNumber = handler.validatePositiveInteger();
     return this.station.searchByTrainNumber(trainNumber);
   }
 
@@ -143,7 +143,7 @@ public class Option {
    */
   public Iterator<TrainDeparture> searchByDestination() {
     message.inputSearchDestination();
-    return this.station.searchByDestination(handler.inputString());
+    return this.station.searchByDestination(handler.validateString());
   }
 
   /**
@@ -218,7 +218,7 @@ public class Option {
    */
   public Iterator<TrainDeparture> setTrainNumber(int trainNumber) {
     message.inputTrainNumber();
-    int newTrainNumber = handler.inputInteger();
+    int newTrainNumber = handler.validatePositiveInteger();
     if (searchByTrainNumber(trainNumber).hasNext() && station.isTrainNumberUnique(newTrainNumber)
         && newTrainNumber > 0) {
       station.setNewTrainNumber(trainNumber, newTrainNumber);
@@ -241,7 +241,7 @@ public class Option {
   public Iterator<TrainDeparture> setTrainLine(int trainNumber) {
     message.inputTrainLine();
     if (searchByTrainNumber(trainNumber).hasNext()) {
-      station.setNewTrainLine(trainNumber, handler.inputString());
+      station.setNewTrainLine(trainNumber, handler.validateString());
     }
     return searchByTrainNumber(trainNumber);
   }
@@ -258,7 +258,7 @@ public class Option {
   public Iterator<TrainDeparture> setDestination(int trainNumber) {
     message.inputDestination();
     if (searchByTrainNumber(trainNumber).hasNext()) {
-      station.setNewDestination(trainNumber, handler.inputString());
+      station.setNewDestination(trainNumber, handler.validateString());
     }
     return searchByTrainNumber(trainNumber);
   }
@@ -275,7 +275,7 @@ public class Option {
   public Iterator<TrainDeparture> setDelay(int trainNumber) {
     message.inputDelay();
     if (searchByTrainNumber(trainNumber).hasNext()) {
-      station.setNewDelay(trainNumber, handler.inputInteger());
+      station.setNewDelay(trainNumber, handler.validateInteger());
     }
     return searchByTrainNumber(trainNumber);
   }
@@ -293,7 +293,7 @@ public class Option {
     if (searchByTrainNumber(trainNumber).hasNext()) {
       message.inputTrackNumber();
       station.setNewTrackNumber(trainNumber,
-          handler.inputInteger());
+          handler.validateInteger());
     }
     return searchByTrainNumber(trainNumber);
   }
