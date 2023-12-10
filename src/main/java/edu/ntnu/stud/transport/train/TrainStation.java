@@ -3,42 +3,43 @@ package edu.ntnu.stud.transport.train;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 
 /**
- * The TrainStation class represent a train dispatch from a train station. The train station
- * contains a list of the trains departing from the train station, sorted by departure time. The
- * train departures will be removed from the list after the train has departed. The train station
- * has a station clock that displays the current time. The station clock is represented as a digital
- * clock. To validate that the same train number is not used for multiple train departures, the
- * train station contains a list of all train numbers used for the train departures. The list of
- * train departures can be navigated using the search methods. The search methods can search for a
- * train number or destination. The train station can also assign a track.
+ * The TrainStation class contains a register of the trains departing from the train station. The
+ * register is sorted by the departure time, using a TreeSet. The train departures will not be shown
+ * in the register after the train has departed. The train register can be navigated using the
+ * search methods. The search methods can search for a train number or destination. The train
+ * station can also assign a track to a selected train departure. The train station has a station
+ * clock that displays the current time at the station. The station clock is represented as a
+ * digital clock. The register will be reset upon a new day. The same train number can not be used
+ * for multiple train departures on the same day.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.4.0
- * @since 2.4.0
+ * @version 3.0.0
+ * @since 3.0.0
  */
 
 public final class TrainStation {
 
-  private final HashMap<Integer, TrainDeparture> trainRegister;
+  private final TreeSet<TrainDeparture> trainRegister;
   private LocalTime stationClock;
 
   /**
-   * Creates object of class TrainStation. The object contains two lists and a station clock. The
-   * first list is a list of all train departures from the train station. The second list is a list
-   * of all train numbers used for the train departures. The station clock is initially set to
+   * Creates object of class TrainStation. The object contains a register and a station clock. The
+   * register is sorted by departure time, then train number if multiple departures have the same
+   * departure time. The register will reset upon a new day. The station clock is initially set to
    * 00:00.
    *
-   * @since 1.4.0
+   * @since 2.4.0
    */
   public TrainStation() {
-    this.trainRegister = new HashMap<>();
-    this.stationClock = LocalTime.parse("00:00");
+    resetClock();
+    this.trainRegister = new TreeSet<>(Comparator.comparing(TrainDeparture::getDepartureTime)
+        .thenComparing(TrainDeparture::getTrainNumber));
   }
 
   /**
@@ -55,22 +56,26 @@ public final class TrainStation {
    * Returns the total amount of trains in the train register.
    *
    * @return The total amount of trains in the train register.
-   * @since 1.4.0
+   * @since 2.4.0
    */
   public int getNumberOfTrains() {
-    return this.trainRegister.size();
+    Iterator<TrainDeparture> trainIterator = hideDepartedTrains();
+    int i = 0;
+    while (trainIterator.hasNext()) {
+      trainIterator.next();
+      i++;
+    }
+    return i;
   }
 
   /**
-   * Returns an iterator of a list containing all train departures from the train register. The
-   * train departures are sorted by departure time.
+   * Returns an iterator of a list containing the train history of the day.
    *
-   * @return An iterator of all train departures from the train register.
-   * @since 1.6.0
+   * @return An iterator of the train history of the day.
+   * @since 2.4.0
    */
   public Iterator<TrainDeparture> getTrainRegister() {
-    return this.trainRegister.values().stream()
-        .sorted(Comparator.comparing(TrainDeparture::getDepartureTime)).iterator();
+    return trainRegister.iterator();
   }
 
   /**
@@ -79,16 +84,18 @@ public final class TrainStation {
    *
    * @param trainNumber The train number of the train departure.
    * @return <code>true</code> if the train number is unique for each train departure.
-   * @since 2.2.0
+   *     <code>false</code> if the train number is not unique for each train departure.
+   * @since 3.0.0
    */
   public boolean isTrainNumberUnique(int trainNumber) {
-    return !this.trainRegister.containsKey(trainNumber);
+    return this.trainRegister.stream()
+        .noneMatch(train -> train.getTrainNumber() == trainNumber);
   }
 
   /**
-   * Set the time displayed on the station clock. The time is an object form the LocalTime class
-   * represented as a digital clock. If the time is before the current time displayed on the station
-   * clock, the time will not be changed.
+   * Set the time displayed on the station clock. The time is an object form the LocalTime class. If
+   * the time is before the current time displayed on the station clock, the time will not be
+   * hanged.
    *
    * @param time The time displayed on the station clock.
    * @since 2.2.2
@@ -97,7 +104,6 @@ public final class TrainStation {
     if (LocalTime.parse(time).isAfter(this.stationClock)) {
       this.stationClock = LocalTime.parse(time);
     }
-    removeDepartedTrains();
   }
 
   /**
@@ -106,24 +112,7 @@ public final class TrainStation {
    * @since 2.4.0
    */
   public void resetClock() {
-    this.stationClock = LocalTime.parse("00:00");
-  }
-
-  /**
-   * Creates a new train number for the train departure. The train number is unique for each train
-   * departure.If the train number already exists in the train register, the train number is set to
-   * -1.
-   *
-   * @param trainNumber The train number to be set.
-   * @return The specified train number.
-   * @since 2.2.1
-   */
-  public int makeTrainNumber(int trainNumber) {
-    int number = -1;
-    if (!this.trainRegister.containsKey(trainNumber)) {
-      number = trainNumber;
-    }
-    return number;
+    this.stationClock = LocalTime.of(0, 0);
   }
 
   /**
@@ -135,17 +124,29 @@ public final class TrainStation {
    * @param trainNumber   The train number of the train departure.
    * @param destination   The destination of the train departure.
    * @param trainLine     The train line of the train departure.
-   * @return <code>true</code> if the train departure was added successfully,
    * @since 1.6.0
    */
-  public boolean addTrainDeparture(String departureTime, int trainNumber,
+  public void addTrainDeparture(String departureTime, int trainNumber,
       String destination, String trainLine) {
-    trainNumber = makeTrainNumber(trainNumber);
-    if (trainNumber != -1 && LocalTime.parse(departureTime).isAfter(this.stationClock)) {
-      this.trainRegister.put(trainNumber, new TrainDeparture(departureTime,
-          trainNumber, destination, trainLine));
+    if (trainNumber != -1 && LocalTime.parse(departureTime).isAfter(this.stationClock)
+        && isTrainNumberUnique(trainNumber)) {
+      this.trainRegister.add(
+          new TrainDeparture(departureTime, trainNumber, destination, trainLine));
     }
-    return trainNumber >= 0;
+  }
+
+  /**
+   * Adds a new train departure to the train register. The train departure is added to the train
+   * register if the train number is unique. If the train number is already existing, the train
+   * departure will not be added to the train register.
+   *
+   * @param train The train departure to be added to the train register.
+   * @since 3.0.0
+   */
+  public void addTrainDeparture(TrainDeparture train) {
+    if (isTrainNumberUnique(train.getTrainNumber())) {
+      this.trainRegister.add(train);
+    }
   }
 
   /**
@@ -155,7 +156,11 @@ public final class TrainStation {
    * @since 2.2.1
    */
   public void removeTrainDeparture(int trainNumber) {
-    this.trainRegister.remove(trainNumber);
+    Iterator<TrainDeparture> iterator = searchByTrainNumber(trainNumber);
+    if (iterator.hasNext()) {
+      TrainDeparture train = iterator.next();
+      trainRegister.remove(train);
+    }
   }
 
   /**
@@ -167,7 +172,7 @@ public final class TrainStation {
    * @since 1.6.0
    */
   public Iterator<TrainDeparture> searchByTrainNumber(int trainNumber) {
-    return this.trainRegister.values().stream()
+    return this.trainRegister.stream()
         .filter(train -> train.getTrainNumber() == trainNumber)
         .collect(Collectors.toCollection(ArrayList::new)).iterator();
   }
@@ -181,18 +186,18 @@ public final class TrainStation {
    * @since 1.6.0
    */
   public Iterator<TrainDeparture> searchByDestination(String destination) {
-    return this.trainRegister.values().stream()
+    return this.trainRegister.stream()
         .filter(train -> train.getDestination().equalsIgnoreCase(destination))
         .collect(Collectors.toCollection(ArrayList::new)).iterator();
   }
 
   /**
-   * Assign a track to the train departure with the specified train number. The track number is
-   * represented as an integer between 1-100. If the train number does not exist in the train
-   * register, the track number is not assigned to any train departure.
+   * Assigns a new track to the train departure with the specified train number. The track number is
+   * represented as a positive integer. If the train number does not exist in the train register,
+   * the track number is not assigned to any train departure.
    *
    * @param trainNumber The train number of the train departure.
-   * @param trackNumber The track number of the train departure.
+   * @param trackNumber The new specified track number.
    * @since 2.2.0
    */
   public void setNewTrackNumber(int trainNumber, int trackNumber) {
@@ -213,7 +218,7 @@ public final class TrainStation {
    */
   public void setNewTrainNumber(int trainNumber, int newTrainNumber) {
     Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
-    if (trainIterator.hasNext() && !trainRegister.containsKey(newTrainNumber)) {
+    if (trainIterator.hasNext() && isTrainNumberUnique(newTrainNumber)) {
       trainIterator.next().setTrainNumber(newTrainNumber);
     }
   }
@@ -235,7 +240,8 @@ public final class TrainStation {
 
   /**
    * Set a new departure time for the train departure associated with specified train number. If the
-   * train number does not exist in the train register, the departure time will not be changed.
+   * train number does not exist in the train register or the new departure time is before the
+   * current time displayed on the station clock, the departure time will not be changed.
    *
    * @param trainNumber      The train number of the train departure.
    * @param newDepartureTime The new departure time of the train departure.
@@ -280,14 +286,28 @@ public final class TrainStation {
   }
 
   /**
-   * Removes all train departures that already departed in the train station, from the train
-   * register.
+   * Returns an iterator of the remaining train departures in the train register. The train
+   * departures that have already departed will not be shown.
    *
-   * @since 2.3.2
+   * @return An iterator of the remaining train departures in the train register.
+   * @since 3.0.0
    */
-  public void removeDepartedTrains() {
-    this.trainRegister.values().stream().filter(train -> train.getDepartureTime()
-            .isBefore(this.stationClock)).collect(Collectors.toCollection(ArrayList::new))
-        .forEach(train -> this.trainRegister.remove(train.getTrainNumber()));
+  public Iterator<TrainDeparture> hideDepartedTrains() {
+    var remainingTrains = this.trainRegister.stream()
+        .filter(train -> (train.getDepartureTime().isBefore(train.getRealDepartureTime())
+            || train.getDepartureTime().equals(train.getRealDepartureTime()))
+            && train.getRealDepartureTime().isAfter(this.stationClock)
+            || train.getDepartureTime().isAfter(train.getRealDepartureTime()));
+
+    return remainingTrains.collect(Collectors.toCollection(ArrayList::new)).iterator();
+  }
+
+  /**
+   * Resets the train register. The train register will be empty after the method is called.
+   *
+   * @since 3.0.0
+   */
+  public void emptyTrainRegister() {
+    this.trainRegister.clear();
   }
 }

@@ -14,11 +14,11 @@ class TrainStationTest {
   @BeforeEach
   void setUp() {
     trainStationTest = new TrainStation();
-    trainStationTest.addTrainDeparture("12:00", 13,
+    trainStationTest.addTrainDeparture("11:00", 13,
         "L2", "Oslo");
     trainStationTest.addTrainDeparture("12:30", 424,
         "F3", "Trondheim");
-    trainStationTest.addTrainDeparture("13:00", 65,
+    trainStationTest.addTrainDeparture("14:00", 65,
         "RE11", "Bergen");
   }
 
@@ -39,5 +39,11 @@ class TrainStationTest {
     trainStationTest.setNewTrainNumber(13, 40);
     assertEquals(40, trainStationTest.searchByTrainNumber(40).next().getTrainNumber(),
         "The train number was not changed");
+  }
+
+  @Test
+  void setNewTrainNumberNegativeTest() {
+    trainStationTest.setStationClock("13:00");
+    assertEquals(65, trainStationTest.hideDepartedTrains().next().getTrainNumber());
   }
 }
