@@ -5,25 +5,23 @@ import java.time.format.DateTimeFormatter;
 
 
 /**
- * The TrainDeparture class represent a train departure from a train station.The train departure
+ * The TrainDeparture class represent a train departure from a train station. The train departure
  * contains information about the train's departure time, delay, destination, train line, train
  * number and track number. The train departure time is represented as a digital clock. The train
- * departure time and delay is an object form the LocalTime class. The departure time is incremented
- * in proportion to the delay.
+ * departure time and delay is an object form the LocalTime class. The real departure time is
+ * incremented in proportion to the delay.
  *
  * @author Johan Fredrik Wilvang
- * @version 2.4.0
+ * @version 3.0.0
  * @since 2.2.0
  */
 
 public class TrainDeparture {
 
-  // required fields
   private LocalTime departureTime;
   private int trainNumber;
   private String trainLine;
   private String destination;
-  // optional fields
   private LocalTime delay;
   private int trackNumber;
 
@@ -45,24 +43,29 @@ public class TrainDeparture {
     this.setTrainNumber(trainNumber);
     this.setTrainLine(trainLine);
     this.setDestination(destination);
-    this.trackNumber = -1;
     this.delay = LocalTime.of(0, 0);
+    this.trackNumber = -1;
   }
 
   /**
-   * Return the train's current delay.
+   * Return the train's current delay as a string containing the hours and minutes delayed. If the
+   * delay is less than one hour, the string only contains the minutes delayed.
    *
-   * @return The current delay, displayed as a digital clock.
-   * @since 1.2.0
+   * @return The current delay, displayed as a string.
+   * @since 2.4.0
    */
   public String getDelay() {
-    return this.delay.getMinute() + this.delay.getHour() * 60 + " min";
+    String delayTime = this.delay.getHour() + "h " + this.delay.getMinute() + "min";
+    if (this.delay.getHour() == 0) {
+      delayTime = this.delay.getMinute() + "min";
+    }
+    return delayTime;
   }
 
   /**
-   * Return the train's current delay in minutes.
+   * Return the train departure's amount of minutes delayed.
    *
-   * @return The current delay in minutes.
+   * @return The amount of minutes delayed
    * @since 2.2.0
    */
   public int getMinutesDelay() {
@@ -70,7 +73,7 @@ public class TrainDeparture {
   }
 
   /**
-   * Return the train's departure time.
+   * Return the train's departure time as a digital clock.
    *
    * @return The departure time as a digital clock.
    * @since 1.2.0
@@ -91,9 +94,9 @@ public class TrainDeparture {
   }
 
   /**
-   * Return the train line.
+   * Return the train line as a string.
    *
-   * @return The train line.
+   * @return The train line as a string.
    * @since 1.2.0
    */
   public String getTrainLine() {
@@ -101,9 +104,9 @@ public class TrainDeparture {
   }
 
   /**
-   * Return the train number.
+   * Return the train number as an integer.
    *
-   * @return The train number.
+   * @return The train number as an integer.
    * @since 1.2.0
    */
   public int getTrainNumber() {
@@ -111,9 +114,9 @@ public class TrainDeparture {
   }
 
   /**
-   * Return the train destination.
+   * Return the train destination as a string.
    *
-   * @return The train destination.
+   * @return The train destination as a string.
    * @since 1.2.0
    */
   public String getDestination() {
@@ -121,9 +124,9 @@ public class TrainDeparture {
   }
 
   /**
-   * Return the train's track number.
+   * Return the train's track number as an integer.
    *
-   * @return The track number.
+   * @return The track number as an integer.
    * @since 1.2.0
    */
   public int getTrackNumber() {
@@ -132,7 +135,7 @@ public class TrainDeparture {
 
   /**
    * Increment the train's delay with a specified number of minutes delayed. If the specified number
-   * of minutes delayed is less than zero, the delay is set to 00:00.
+   * of minutes delayed is less than or equal to zero, the delay is set to zero.
    *
    * @param minutesDelay The specified number of minutes delayed.
    * @since 2.1.1
@@ -194,15 +197,14 @@ public class TrainDeparture {
   }
 
   /**
-   * Set the train number to a new specified train number. The train number's area of validity is a
-   * positive number up to 4 digits. If the specified train number is outside the area of validity,
-   * the train number is set to -1.
+   * Set the train number to a new specified train number. If the specified train number is less
+   * than or equal to zero, the train number is set to -1.
    *
    * @param trainNumber The new specified train number.
    * @since 2.1.1
    */
   public void setTrainNumber(int trainNumber) {
-    if (trainNumber > 0 && trainNumber < 10000) {
+    if (trainNumber > 0) {
       this.trainNumber = trainNumber;
     } else {
       this.trainNumber = -1;
@@ -210,18 +212,19 @@ public class TrainDeparture {
   }
 
   /**
-   * Set the track number to a new specified track number. The track number's area of validity is a
-   * positive number up to 100. If the specified track number is outside the area of validity, the
-   * track number is set to zero.
+   * Set the track number to a new specified track number. If the specified track number is less
+   * than or equal to zero, the track number is set to -1.
    *
    * @param trackNumber The new specified track number.
    * @since 1.6.0
    */
   public void setTrackNumber(int trackNumber) {
-    if (trackNumber > 0 && trackNumber <= 100) {
+    if (trackNumber > 0) {
       this.trackNumber = trackNumber;
     } else {
       this.trackNumber = -1;
     }
   }
+
+
 }
