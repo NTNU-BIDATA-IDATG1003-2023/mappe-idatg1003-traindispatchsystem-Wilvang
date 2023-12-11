@@ -16,7 +16,7 @@ import java.util.Iterator;
  * The class uses an object of class Print to print messages to the console.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.4
+ * @version 3.0.5
  * @since 3.0.0
  */
 

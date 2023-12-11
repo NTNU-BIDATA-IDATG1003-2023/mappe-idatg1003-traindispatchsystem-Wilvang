@@ -25,10 +25,6 @@ class TrainDepartureTest {
         new TrainDeparture("12:00", 13, "L2", "Oslo");
   }
 
-  @AfterEach
-  void tearDown() {
-  }
-
   /*
    * Positive test for the delay method. Checks handling of valid parameters and if the real
    * departure time is updated with the delay.
@@ -52,12 +48,54 @@ class TrainDepartureTest {
   }
 
   /*
-   * Positive test for the setDepartureTime method. Checks handling of invalid parameters.
+   * Positive test for the setDepartureTime method. Checks handling of invalid time formats.
    */
   @Test
   void setDepartureTimePositiveTest() {
     trainDepartureTest.setDepartureTime("13:60");
     assertEquals(LocalTime.parse("00:00"), trainDepartureTest.getDepartureTime(),
         "The departure time did not reset to 00:00");
+  }
+
+  /*
+   * Negative test for the setDepartureTime method. Checks handling of invalid integers.
+   */
+  @Test
+  void setTrackNegativeTest() {
+    trainDepartureTest.setTrackNumber(-10);
+    assertEquals(-1, trainDepartureTest.getTrackNumber(),
+        "The track number should not be set to -10");
+  }
+
+  /*
+   * Positive test for the setTrackNumber method. Checks handling of valid integers.
+   */
+  @Test
+  void setTrainNumberPositiveTest() {
+    trainDepartureTest.setTrainNumber(40);
+    assertEquals(40, trainDepartureTest.getTrainNumber(),
+        "The train number was not changed to 40");
+  }
+
+  /*
+   * Positive test for the setTrainNumber method. Checks if the characters are converted to upper
+   * case and if the correct train line is set.
+   */
+  @Test
+  void setTrainLinePositiveTest() {
+    trainDepartureTest.setTrainLine("l1");
+    assertEquals("L1", trainDepartureTest.getTrainLine(),
+        "The train line was not changed to L1");
+  }
+
+  /*
+   * Positive test for the setDestination method. Checks if the first character is converted to
+   * upper case and the rest to lower case, and if the correct destination is set.
+   */
+  @Test
+  void setDestinationPositiveTest() {
+    trainDepartureTest.setDestination("oslo");
+    assertEquals("Oslo", trainDepartureTest.getDestination(),
+        "The destination was not changed to Oslo");
   }
 }

@@ -14,8 +14,8 @@ import java.util.Iterator;
  * manipulates the train register in the application.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.4
- * @since 2.4.0
+ * @version 3.0.5
+ * @since 3.0.5
  */
 
 public class Menu {
@@ -160,13 +160,13 @@ public class Menu {
    * enter the train number, the train line, the destination, the departure time and the delay. If
    * the station clock is 23:59, the method will prompt the user to update the clock to a new day.
    *
-   * @since 2.0.0
+   * @since 3.0.5
    */
   private void addTrainMenu() {
-    if (!dispatcher.displayClock().equals(LocalTime.parse("23:59"))
-        && dispatcher.selectAddTrainMenu(message)) {
-      addTrainSubMenu();
-
+    if (!dispatcher.displayClock().equals(LocalTime.parse("23:59"))) {
+      if (dispatcher.selectAddTrainMenu(message)){
+        addTrainSubMenu();
+      }
     } else if (dispatcher.selectUpdateClockMenu(message)) {
       updateClockMenu();
     }

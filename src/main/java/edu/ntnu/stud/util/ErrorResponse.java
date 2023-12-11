@@ -6,7 +6,7 @@ package edu.ntnu.stud.util;
  * to the user. The enum also contains a method that returns the error message.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.4
+ * @version 3.0.5
  * @since 2.4.0
  */
 

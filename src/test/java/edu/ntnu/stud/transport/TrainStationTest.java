@@ -34,10 +34,6 @@ class TrainStationTest {
 
   }
 
-  @AfterEach
-  void tearDown() {
-  }
-
   /*
    * Positive test for the searchByDestination method. Checks if the methods returns train departures
    * containing the dest destination searched for.

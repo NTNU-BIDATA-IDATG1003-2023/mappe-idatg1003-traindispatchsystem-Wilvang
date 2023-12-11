@@ -12,7 +12,7 @@ import java.util.Iterator;
  * colors.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.4
+ * @version 3.0.5
  * @since 3.0.3
  */
 
