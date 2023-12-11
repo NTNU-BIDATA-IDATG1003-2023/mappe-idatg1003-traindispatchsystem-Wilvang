@@ -10,7 +10,7 @@ import edu.ntnu.stud.ui.Menu;
  * manu is final since
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.0
+ * @version 3.0.1
  * @since 2.4.0
  */
 
@@ -31,3 +31,4 @@ public class TrainDispatchApp {
     menu.start();
   }
 }
+//TODO: Fix test classes!

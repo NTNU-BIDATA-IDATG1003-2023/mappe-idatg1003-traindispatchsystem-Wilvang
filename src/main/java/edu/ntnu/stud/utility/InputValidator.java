@@ -15,7 +15,7 @@ import java.util.Scanner;
  * class also contains a boolean variable to check if the user input is correct.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.0
+ * @version 3.0.1
  * @since 3.0.0
  */
 

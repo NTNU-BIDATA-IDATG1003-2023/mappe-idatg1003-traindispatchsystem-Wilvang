@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * for multiple train departures on the same day.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.0
+ * @version 3.0.1
  * @since 3.0.0
  */
 
@@ -218,7 +218,7 @@ public final class TrainStation {
    */
   public void setNewTrainNumber(int trainNumber, int newTrainNumber) {
     Iterator<TrainDeparture> trainIterator = searchByTrainNumber(trainNumber);
-    if (trainIterator.hasNext() && isTrainNumberUnique(newTrainNumber)) {
+    if (trainIterator.hasNext() && isTrainNumberUnique(newTrainNumber) && newTrainNumber > 0) {
       trainIterator.next().setTrainNumber(newTrainNumber);
     }
   }
