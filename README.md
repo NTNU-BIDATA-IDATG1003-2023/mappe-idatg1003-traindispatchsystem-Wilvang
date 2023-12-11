@@ -11,19 +11,19 @@ This project is a simplified system for dispatching train departures, using a te
 
 ## Project structure
 
-The project is structured with Apache Maven. The unit tests are located in the test folder in a corresponding package as the unit classes. The source code is pacaged in the main folder. There are 3 pagaes in the main folder. The edu.ntnu.stud.transport package contains the unit classes _TrainDeparture_ and _TrainStation_. The edu.ntnu.stud.ui package holds all the classes responseble for the user interface. The _Menu_ class is the only class that directly comunicates with the main class. The package edu.ntnu.stud.util contains the class _InputValidator_ and the enum _ErrorResponse_ which are responseble for error handling and gracefull termination.
+The project is structured with Apache Maven. The unit tests are located in the test folder in a corresponding package as the unit classes. The source code is pacaged in the main folder. There are 3 pagaes in the main folder. The edu.ntnu.stud.transport package contains the unit classes `TrainDeparture` and `TrainStation`. The edu.ntnu.stud.ui package holds all the classes responseble for the user interface. The `Menu` class is the only class that directly comunicates with the main class. The package edu.ntnu.stud.util contains the class `InputValidator` and the enum `ErrorResponse` which are responseble for error handling and gracefull termination.
 
 ## Link to repository
 
-[My GitHub Repository](https://github.com/Wilvang?tab=repositories)
+You can find my GitHub epository [here](https://github.com/Wilvang?tab=repositories).
 
 ## How to run the project
 
-To run the project, you have to open the project in your IDE and execute the main class. The main class is _TrainDispatchApp.java_ wich conatins the main method witch runs the application. The application is a TUI and the only way to interact with it is trought text input. The output to be expected asre messages and menus based on the text input provided. If the text input is not in the correct forat, the application will output an error and promt to try again.
+To run the project, you first have to clone the repository and open the project in your IDE. To run the application you have to execute the _main_ class. The main class is `TrainDispatchApp`wich conatins the main method witch runs the application. The application is a TUI and the only way to interact with it is trought text input. The output to be expected asre messages and menus based on the text input provided. If the text input is not in the correct forat, the application will output an error and promt to try again.
 
 ## How to run the tests
 
-The unit tests are handled by Apache Maven. The JUnit5 dependencies are located in the pom.xml file. If you are using Intelij, you can use the Maven plugin. Select the test phase in the Build Lifecycle to run the unit tests. Otherwise, the tests can be run using the following command in the terminal;
+The unit tests are handled by Apache Maven. The JUnit5 dependencies are located in the pom.xml file. If you are using Intelij, you can use the Maven plugin. Select the `test` phase in the `Build Lifecycle` to run the unit tests. Otherwise, the tests can be run using the following command in the terminal;
 ```console
 mvn test
 ```
