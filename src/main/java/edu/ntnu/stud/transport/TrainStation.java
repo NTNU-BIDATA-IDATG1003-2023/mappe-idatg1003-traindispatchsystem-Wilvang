@@ -1,4 +1,4 @@
-package edu.ntnu.stud.transport.train;
+package edu.ntnu.stud.transport;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * for multiple train departures on the same day.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.3
+ * @version 3.0.4
  * @since 3.0.0
  */
 

@@ -1,8 +1,8 @@
 package edu.ntnu.stud.ui;
 
-import edu.ntnu.stud.transport.train.TrainDeparture;
-import edu.ntnu.stud.transport.train.TrainStation;
-import edu.ntnu.stud.utility.ErrorResponse;
+import edu.ntnu.stud.transport.TrainDeparture;
+import edu.ntnu.stud.transport.TrainStation;
+import edu.ntnu.stud.util.ErrorResponse;
 import java.time.LocalTime;
 import java.util.Iterator;
 
@@ -14,7 +14,7 @@ import java.util.Iterator;
  * manipulates the train register in the application.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.3
+ * @version 3.0.4
  * @since 2.4.0
  */
 

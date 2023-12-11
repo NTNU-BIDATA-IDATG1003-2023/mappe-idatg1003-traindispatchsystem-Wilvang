@@ -1,5 +1,4 @@
-package edu.ntnu.stud.utility;
-
+package edu.ntnu.stud.util;
 
 /**
  * This enum contains all the error messages that are printed to the user. The enum contains a
@@ -7,7 +6,7 @@ package edu.ntnu.stud.utility;
  * to the user. The enum also contains a method that returns the error message.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.3
+ * @version 3.0.4
  * @since 2.4.0
  */
 

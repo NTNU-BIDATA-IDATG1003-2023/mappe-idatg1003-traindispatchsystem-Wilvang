@@ -1,6 +1,6 @@
-package edu.ntnu.stud.utility;
+package edu.ntnu.stud.util;
 
-import edu.ntnu.stud.transport.train.TrainStation;
+import edu.ntnu.stud.transport.TrainStation;
 import edu.ntnu.stud.ui.Print;
 import java.time.LocalTime;
 import java.util.InputMismatchException;
@@ -15,7 +15,7 @@ import java.util.Scanner;
  * class also contains a boolean variable to check if the user input is correct.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.3
+ * @version 3.0.4
  * @since 3.0.0
  */
 

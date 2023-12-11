@@ -1,9 +1,9 @@
 package edu.ntnu.stud.ui;
 
-import edu.ntnu.stud.transport.train.TrainDeparture;
-import edu.ntnu.stud.transport.train.TrainStation;
-import edu.ntnu.stud.utility.ErrorResponse;
-import edu.ntnu.stud.utility.InputValidator;
+import edu.ntnu.stud.transport.TrainDeparture;
+import edu.ntnu.stud.transport.TrainStation;
+import edu.ntnu.stud.util.ErrorResponse;
+import edu.ntnu.stud.util.InputValidator;
 import java.time.LocalTime;
 import java.util.Iterator;
 
@@ -16,7 +16,7 @@ import java.util.Iterator;
  * The class uses an object of class Print to print messages to the console.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.3
+ * @version 3.0.4
  * @since 3.0.0
  */
 
