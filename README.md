@@ -15,7 +15,7 @@ The project is structured with Apache Maven. The unit tests are located in the t
 
 ## Link to repository
 
-You can find my GitHub epository [here](https://github.com/Wilvang?tab=repositories).
+You can find my GitHub repository [here](https://github.com/Wilvang?tab=repositories).
 
 ## How to run the project
 
