@@ -12,8 +12,8 @@ import java.util.Iterator;
  * colors.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.2
- * @since 2.4.0
+ * @version 3.0.3
+ * @since 3.0.3
  */
 
 public class Print {
@@ -336,7 +336,7 @@ public class Print {
    * @param stationClock  The clock containing the current time of the station.
    * @param trainIterator The train iterator containing the train departures.
    * @return The information of the selected train departure.
-   * @since 2.4.0
+   * @since 3.0.3
    */
   public Object[] trainDepartureInformation(LocalTime stationClock,
       Iterator<TrainDeparture> trainIterator) {
@@ -352,7 +352,8 @@ public class Print {
     if (train.getTrackNumber() != -1) {
       trainInformation[5] = train.getTrackNumber();
     }
-    if (train.getRealDepartureTime().isBefore(stationClock)) {
+    if (train.getRealDepartureTime().isBefore(stationClock)
+        && !train.getRealDepartureTime().isBefore(train.getDepartureTime())) {
       trainInformation[0] = color.printPurpleBold("DEPARTED")
           + ConsoleColor.ANSI_WHITE + "            ";
     }

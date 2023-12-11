@@ -7,7 +7,7 @@ package edu.ntnu.stud.ui;
  * purple and cyan. The messages can also be displayed with background colors and bold characters.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.2
+ * @version 3.0.3
  * @since 2.3.3
  */
 

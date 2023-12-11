@@ -13,9 +13,8 @@ import java.util.Iterator;
  * (TUI) that is displayed in the terminal. The menu is divided into different submenus that
  * manipulates the train register in the application.
  *
- *
  * @author Johan Fredrik Wilvang
- * @version 3.0.2
+ * @version 3.0.3
  * @since 2.4.0
  */
 
@@ -100,6 +99,7 @@ public class Menu {
         case Selection.RETURN_MAIN_MENU -> message.returnToMainMenu();
         default -> {
           message.errorMessage(ErrorResponse.INVALID_OPTION);
+          dispatcher.pressToContinue(message);
           informationTableMenu();
         }
       }
@@ -119,6 +119,7 @@ public class Menu {
       message.printTrainInformationTable(this.dispatcher.displayClock(),
           dispatcher.getTrainRegister());
       dispatcher.pressToContinue(message);
+
     } else if (dispatcher.askEmptyRegister(message)) {
       addTrainSubMenu();
     }
@@ -140,13 +141,14 @@ public class Menu {
    * then be prompted an option to add a new train departure.
    *
    * @return <code>true</code> if the train register is not empty, <code>false</code> if the train
-   *     register is empty.
+   * register is empty.
    * @since 2.3.0
    */
   private boolean isInformationTableEmpty() {
     if (dispatcher.getTrainRegister().hasNext()) {
       message.printTrainInformationTable(this.dispatcher.displayClock(),
           dispatcher.getTrainRegister());
+
     } else if (dispatcher.askEmptyRegister(message)) {
       addTrainSubMenu();
     }
@@ -164,6 +166,7 @@ public class Menu {
     if (!dispatcher.displayClock().equals(LocalTime.parse("23:59"))
         && dispatcher.selectAddTrainMenu(message)) {
       addTrainSubMenu();
+
     } else if (dispatcher.selectUpdateClockMenu(message)) {
       updateClockMenu();
     }
@@ -180,6 +183,7 @@ public class Menu {
     int trainNumber = dispatcher.addTrainDeparture(message);
     if (dispatcher.searchByTrainNumber(trainNumber).hasNext()) {
       dispatcher.displayNewTrainDeparture(message, trainNumber);
+
       if (dispatcher.askTrackNumber(message)) {
         dispatcher.setTrackNumber(message, trainNumber);
       }
@@ -198,6 +202,7 @@ public class Menu {
   private void removeTrainMenu() {
     if (dispatcher.getTrainRegister().hasNext()) {
       message.removeTrainDepartureOption();
+
       if (dispatcher.askToContinue(message)) {
         removeTrainSubMenu();
       }
@@ -217,9 +222,11 @@ public class Menu {
   private void removeTrainSubMenu() {
     message.printTrainInformationTable(dispatcher.displayClock(),
         dispatcher.getTrainRegister());
+
     Iterator<TrainDeparture> trainIterator = dispatcher.searchByTrainNumber(message);
     if (trainIterator.hasNext()) {
       dispatcher.removeTrainDeparture(trainIterator.next().getTrainNumber());
+
     } else if (dispatcher.askAgainEmptyIterator(message)) {
       removeTrainMenu();
     }
@@ -235,8 +242,10 @@ public class Menu {
   private void editTrainMenu() {
     if (isInformationTableEmpty()) {
       Iterator<TrainDeparture> trainIterator = dispatcher.searchByTrainNumber(message);
+
       if (trainIterator.hasNext()) {
         editTrainSubMenu(trainIterator);
+
       } else if (dispatcher.askAgainEmptyIterator(message)) {
         editTrainMenu();
       }
@@ -270,6 +279,7 @@ public class Menu {
       case Selection.RETURN_MAIN_MENU -> message.returnToMainMenu();
       default -> {
         message.errorMessage(ErrorResponse.INVALID_OPTION);
+        dispatcher.pressToContinue(message);
         editTrainSubMenu(dispatcher.searchByTrainNumber(trainNumber));
       }
     }
@@ -286,8 +296,10 @@ public class Menu {
   private void setDelayMenu() {
     if (isInformationTableEmpty()) {
       Iterator<TrainDeparture> trainIterator = dispatcher.searchByTrainNumber(message);
+
       if (trainIterator.hasNext()) {
         dispatcher.setDelay(message, trainIterator.next().getTrainNumber());
+
       } else if (dispatcher.askAgainEmptyIterator(message)) {
         setDelayMenu();
       }
@@ -305,8 +317,10 @@ public class Menu {
   private void assignTrackMenu() {
     if (isInformationTableEmpty()) {
       Iterator<TrainDeparture> trainIterator = dispatcher.searchByTrainNumber(message);
+
       if (trainIterator.hasNext()) {
         dispatcher.setTrackNumber(message, trainIterator.next().getTrainNumber());
+
       } else if (dispatcher.askAgainEmptyIterator(message)) {
         assignTrackMenu();
       }
@@ -330,6 +344,7 @@ public class Menu {
         case Selection.RETURN_MAIN_MENU -> message.returnToMainMenu();
         default -> {
           message.errorMessage(ErrorResponse.INVALID_OPTION);
+          dispatcher.pressToContinue(message);
           searchMenu();
         }
       }
@@ -349,8 +364,8 @@ public class Menu {
   private void searchByTrainNumberMenu() {
     message.printTrainInformationTable(dispatcher.displayClock(),
         dispatcher.getTrainHistory());
-    Iterator<TrainDeparture> withTrainNumber = dispatcher.searchByTrainNumber(message);
 
+    Iterator<TrainDeparture> withTrainNumber = dispatcher.searchByTrainNumber(message);
     if (withTrainNumber.hasNext()) {
       int trainNumber = withTrainNumber.next().getTrainNumber();
       message.printSelectedTrain(dispatcher.displayClock(),
@@ -374,9 +389,11 @@ public class Menu {
   private void searchByDestinationMenu() {
     message.printTrainInformationTable(dispatcher.displayClock(), dispatcher.getTrainHistory());
     Iterator<TrainDeparture> withDestination = dispatcher.searchByDestination(message);
+
     if (withDestination.hasNext()) {
       message.printSelectedTrain(dispatcher.displayClock(), withDestination);
       dispatcher.pressToContinue(message);
+
     } else if (dispatcher.askAgainEmptyIterator(message)) {
       searchByDestinationMenu();
     }

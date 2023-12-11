@@ -10,7 +10,7 @@ import edu.ntnu.stud.ui.Menu;
  * manu is final since
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.2
+ * @version 3.0.3
  * @since 2.4.0
  */
 
