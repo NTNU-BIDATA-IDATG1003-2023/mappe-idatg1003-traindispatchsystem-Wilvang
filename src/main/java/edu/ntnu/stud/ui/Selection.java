@@ -6,7 +6,7 @@ package edu.ntnu.stud.ui;
  * constants the options in the different menus in the application.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.1
+ * @version 3.0.2
  * @since 2.4.0
  */
 

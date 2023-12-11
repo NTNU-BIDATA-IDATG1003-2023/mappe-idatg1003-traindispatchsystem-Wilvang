@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * for multiple train departures on the same day.
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.1
+ * @version 3.0.2
  * @since 3.0.0
  */
 

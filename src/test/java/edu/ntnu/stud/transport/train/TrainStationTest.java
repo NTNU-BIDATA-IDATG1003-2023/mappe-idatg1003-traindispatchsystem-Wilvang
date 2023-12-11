@@ -67,7 +67,7 @@ class TrainStationTest {
   @Test
   void setNewTrainNumberNegativeTest() {
     trainStationTest.setNewTrainNumber(13, 0);
-    assertFalse( trainStationTest.searchByTrainNumber(-1).hasNext(),
+    assertFalse(trainStationTest.searchByTrainNumber(-1).hasNext(),
         "The train number was set to the invalid value 0");
   }
 

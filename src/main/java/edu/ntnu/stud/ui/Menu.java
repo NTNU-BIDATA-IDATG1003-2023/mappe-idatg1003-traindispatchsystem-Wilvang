@@ -15,7 +15,7 @@ import java.util.Iterator;
  *
  *
  * @author Johan Fredrik Wilvang
- * @version 3.0.1
+ * @version 3.0.2
  * @since 2.4.0
  */
 
